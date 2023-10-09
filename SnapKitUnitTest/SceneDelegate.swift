@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: scene.coordinateSpace.bounds)
         window?.windowScene = scene
         
-        let viewController = NavigationController(rootViewController: SearchViewController())
+        let viewController = NavigationController(rootViewController: SearchViewController(SearchViewModel()))
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
     }

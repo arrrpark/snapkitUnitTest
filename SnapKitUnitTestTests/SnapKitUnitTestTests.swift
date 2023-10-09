@@ -15,7 +15,7 @@ final class SnapKitUnitTestTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        appSearchViewController = SearchViewController()
+        appSearchViewController = SearchViewController(SearchViewModel())
         navigationController = NavigationController(rootViewController: appSearchViewController)
     }
     
@@ -84,6 +84,28 @@ final class SnapKitUnitTestTests: XCTestCase {
         XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(deleteIcon))
         XCTAssertTrue(deleteIcon.frame.width == 20)
         XCTAssertTrue(deleteIcon.frame.height == 20)
+        
+        let appInfoCollectionViewFlowLayout = appSearchViewController.appInfoCollectionViewFlowLayout
+        XCTAssertTrue(appInfoCollectionViewFlowLayout.scrollDirection == .vertical)
+        XCTAssertTrue(appInfoCollectionViewFlowLayout.minimumLineSpacing == 0)
+        XCTAssertTrue(appInfoCollectionViewFlowLayout.minimumInteritemSpacing == 0)
+        
+        let appInfoCollectionView = appSearchViewController.appInfoCollectionView
+        XCTAssertTrue(appInfoCollectionView.backgroundColor == .clear)
+        print(searchField.frame)
+        print(appInfoCollectionView.frame)
+        
+        XCTAssertTrue(appInfoCollectionView.frame.minX == 20)
+        XCTAssertTrue(appInfoCollectionView.frame.minY == searchField.frame.maxY + 10)
+        XCTAssertTrue(appInfoCollectionView.frame.width == UIScreen.main.bounds.width - 40)
+        XCTAssertTrue(appInfoCollectionView.frame.height == UIScreen.main.bounds.height - 30 - 10 - ScreenUtil.shared.safeAreaTopMargin - ScreenUtil.shared.safeAreaBottomMargin)
+    }
+    
+    func testAppInfoCollectionViewProperlySet() {
+        appSearchViewController.viewDidLoad()
+        appSearchViewController.view.layoutIfNeeded()
+        
+        let appInfoCollectionView = appSearchViewController.appInfoCollectionView
     }
     
 }

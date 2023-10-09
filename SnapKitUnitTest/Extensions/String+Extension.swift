@@ -7,14 +7,6 @@
 
 import UIKit
 
-enum Colors: String {
-    case backgroundGray = "ECECEC"
-    case lightGray = "D4D4D4"
-    case gray = "B2B2B2"
-    case deepGray = "8C8C8C"
-    case basicTint = "0078FF"
-}
-
 extension String {
     var hexStringToUIColor: UIColor {
         get {
@@ -38,5 +30,17 @@ extension String {
                 alpha: CGFloat(1.0)
             )
         }
+    }
+}
+
+extension Array where Element == String {
+    var genresString: String {
+        let genresString = NSMutableString()
+        self.forEach {
+            genresString.append($0)
+            genresString.append(", ")
+        }
+        genresString.deleteCharacters(in: NSRange(location: genresString.length - 2, length: 2))
+        return genresString as String
     }
 }

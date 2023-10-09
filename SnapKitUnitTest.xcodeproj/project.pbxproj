@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A6C40402AD3ADDF001A3DD2 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C403F2AD3ADDF001A3DD2 /* Colors.swift */; };
+		0A6C40422AD3AF8E001A3DD2 /* AlamofireWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C40412AD3AF8E001A3DD2 /* AlamofireWrapper.swift */; };
+		0A6C40442AD3B002001A3DD2 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C40432AD3B002001A3DD2 /* SearchViewModel.swift */; };
+		0A6C40492AD3B7E7001A3DD2 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 0A6C40482AD3B7E7001A3DD2 /* CombineCocoa */; };
+		0A6C404D2AD3C39A001A3DD2 /* AppInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C404C2AD3C39A001A3DD2 /* AppInfoCell.swift */; };
+		0A6C404F2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C404E2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift */; };
+		0A6C40522AD3C3FF001A3DD2 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 0A6C40512AD3C3FF001A3DD2 /* Cosmos */; };
+		0A6C40542AD3C66D001A3DD2 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C40532AD3C66D001A3DD2 /* Int+Extension.swift */; };
 		0A88FC742AD2ECFD00469934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC732AD2ECFD00469934 /* AppDelegate.swift */; };
 		0A88FC762AD2ECFD00469934 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC752AD2ECFD00469934 /* SceneDelegate.swift */; };
 		0A88FC782AD2ECFD00469934 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC772AD2ECFD00469934 /* SearchViewController.swift */; };
@@ -21,7 +29,7 @@
 		0A88FCAD2AD2EE8900469934 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 0A88FCAC2AD2EE8900469934 /* Then */; };
 		0A88FCB02AD2EEA700469934 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0A88FCAF2AD2EEA700469934 /* Alamofire */; };
 		0A88FCB22AD2EF1B00469934 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCB12AD2EF1B00469934 /* NavigationController.swift */; };
-		0A88FCB42AD2F23C00469934 /* SearchViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCB32AD2F23C00469934 /* SearchViewProtocol.swift */; };
+		0A88FCB42AD2F23C00469934 /* SearchAppProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCB32AD2F23C00469934 /* SearchAppProtocol.swift */; };
 		0A88FCB72AD2F28E00469934 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCB62AD2F28E00469934 /* AppInfo.swift */; };
 		0A88FCB92AD2F29900469934 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCB82AD2F29900469934 /* SearchResult.swift */; };
 		0A88FCBB2AD2F30100469934 /* ScreenUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCBA2AD2F30100469934 /* ScreenUtil.swift */; };
@@ -47,6 +55,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A6C403F2AD3ADDF001A3DD2 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		0A6C40412AD3AF8E001A3DD2 /* AlamofireWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireWrapper.swift; sourceTree = "<group>"; };
+		0A6C40432AD3B002001A3DD2 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		0A6C404C2AD3C39A001A3DD2 /* AppInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoCell.swift; sourceTree = "<group>"; };
+		0A6C404E2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoCollectionView.swift; sourceTree = "<group>"; };
+		0A6C40532AD3C66D001A3DD2 /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		0A88FC702AD2ECFD00469934 /* SnapKitUnitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnapKitUnitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A88FC732AD2ECFD00469934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A88FC752AD2ECFD00469934 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +75,7 @@
 		0A88FC962AD2ECFF00469934 /* SnapKitUnitTestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapKitUnitTestUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0A88FCA62AD2EDF900469934 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		0A88FCB12AD2EF1B00469934 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		0A88FCB32AD2F23C00469934 /* SearchViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewProtocol.swift; sourceTree = "<group>"; };
+		0A88FCB32AD2F23C00469934 /* SearchAppProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAppProtocol.swift; sourceTree = "<group>"; };
 		0A88FCB62AD2F28E00469934 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		0A88FCB82AD2F29900469934 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		0A88FCBA2AD2F30100469934 /* ScreenUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenUtil.swift; sourceTree = "<group>"; };
@@ -74,9 +88,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A6C40522AD3C3FF001A3DD2 /* Cosmos in Frameworks */,
 				0A88FCAA2AD2EE6E00469934 /* Kingfisher in Frameworks */,
 				0A88FCB02AD2EEA700469934 /* Alamofire in Frameworks */,
 				0A88FCAD2AD2EE8900469934 /* Then in Frameworks */,
+				0A6C40492AD3B7E7001A3DD2 /* CombineCocoa in Frameworks */,
 				0A88FCA52AD2EDDA00469934 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -126,9 +142,14 @@
 				0A88FCA62AD2EDF900469934 /* BaseViewController.swift */,
 				0A88FCB12AD2EF1B00469934 /* NavigationController.swift */,
 				0A88FCBA2AD2F30100469934 /* ScreenUtil.swift */,
+				0A6C40412AD3AF8E001A3DD2 /* AlamofireWrapper.swift */,
+				0A6C403F2AD3ADDF001A3DD2 /* Colors.swift */,
 				0A88FCB52AD2F27D00469934 /* Model */,
+				0A6C404C2AD3C39A001A3DD2 /* AppInfoCell.swift */,
+				0A6C404E2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift */,
 				0A88FC772AD2ECFD00469934 /* SearchViewController.swift */,
-				0A88FCB32AD2F23C00469934 /* SearchViewProtocol.swift */,
+				0A88FCB32AD2F23C00469934 /* SearchAppProtocol.swift */,
+				0A6C40432AD3B002001A3DD2 /* SearchViewModel.swift */,
 				0A88FCC02AD2FE4200469934 /* Extensions */,
 				0A88FC7C2AD2ECFE00469934 /* Assets.xcassets */,
 				0A88FC7E2AD2ECFE00469934 /* LaunchScreen.storyboard */,
@@ -168,6 +189,7 @@
 			children = (
 				0A88FCBC2AD2F64900469934 /* String+Extension.swift */,
 				0A88FCBE2AD2F73600469934 /* UITextField+Extension.swift */,
+				0A6C40532AD3C66D001A3DD2 /* Int+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -193,6 +215,8 @@
 				0A88FCA92AD2EE6E00469934 /* Kingfisher */,
 				0A88FCAC2AD2EE8900469934 /* Then */,
 				0A88FCAF2AD2EEA700469934 /* Alamofire */,
+				0A6C40482AD3B7E7001A3DD2 /* CombineCocoa */,
+				0A6C40512AD3C3FF001A3DD2 /* Cosmos */,
 			);
 			productName = SnapKitUnitTest;
 			productReference = 0A88FC702AD2ECFD00469934 /* SnapKitUnitTest.app */;
@@ -271,6 +295,8 @@
 				0A88FCA82AD2EE6E00469934 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				0A88FCAB2AD2EE8900469934 /* XCRemoteSwiftPackageReference "Then" */,
 				0A88FCAE2AD2EEA600469934 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				0A6C40472AD3B7E7001A3DD2 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
+				0A6C40502AD3C3FF001A3DD2 /* XCRemoteSwiftPackageReference "Cosmos" */,
 			);
 			productRefGroup = 0A88FC712AD2ECFD00469934 /* Products */;
 			projectDirPath = "";
@@ -315,13 +341,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A88FCBB2AD2F30100469934 /* ScreenUtil.swift in Sources */,
+				0A6C40422AD3AF8E001A3DD2 /* AlamofireWrapper.swift in Sources */,
+				0A6C40402AD3ADDF001A3DD2 /* Colors.swift in Sources */,
+				0A6C40542AD3C66D001A3DD2 /* Int+Extension.swift in Sources */,
 				0A88FC782AD2ECFD00469934 /* SearchViewController.swift in Sources */,
 				0A88FCA72AD2EDF900469934 /* BaseViewController.swift in Sources */,
 				0A88FCBF2AD2F73600469934 /* UITextField+Extension.swift in Sources */,
 				0A88FCB92AD2F29900469934 /* SearchResult.swift in Sources */,
-				0A88FCB42AD2F23C00469934 /* SearchViewProtocol.swift in Sources */,
+				0A88FCB42AD2F23C00469934 /* SearchAppProtocol.swift in Sources */,
+				0A6C40442AD3B002001A3DD2 /* SearchViewModel.swift in Sources */,
 				0A88FCB22AD2EF1B00469934 /* NavigationController.swift in Sources */,
+				0A6C404F2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift in Sources */,
 				0A88FC742AD2ECFD00469934 /* AppDelegate.swift in Sources */,
+				0A6C404D2AD3C39A001A3DD2 /* AppInfoCell.swift in Sources */,
 				0A88FC762AD2ECFD00469934 /* SceneDelegate.swift in Sources */,
 				0A88FCBD2AD2F64900469934 /* String+Extension.swift in Sources */,
 				0A88FCB72AD2F28E00469934 /* AppInfo.swift in Sources */,
@@ -664,6 +696,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0A6C40472AD3B7E7001A3DD2 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.1;
+			};
+		};
+		0A6C40502AD3C3FF001A3DD2 /* XCRemoteSwiftPackageReference "Cosmos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/Cosmos";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.0.0;
+			};
+		};
 		0A88FCA32AD2EDDA00469934 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -699,6 +747,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0A6C40482AD3B7E7001A3DD2 /* CombineCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A6C40472AD3B7E7001A3DD2 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
+			productName = CombineCocoa;
+		};
+		0A6C40512AD3C3FF001A3DD2 /* Cosmos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A6C40502AD3C3FF001A3DD2 /* XCRemoteSwiftPackageReference "Cosmos" */;
+			productName = Cosmos;
+		};
 		0A88FCA42AD2EDDA00469934 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0A88FCA32AD2EDDA00469934 /* XCRemoteSwiftPackageReference "SnapKit" */;
