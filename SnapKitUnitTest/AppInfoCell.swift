@@ -14,6 +14,11 @@ class AppInfoCell: UICollectionViewCell {
     
     static let appGuideWidth = ((UIScreen.main.bounds.width - 40) / 3) - 10
     
+    var appIconURL: URL?
+    var appGuideURL1: URL?
+    var appGuideURL2: URL?
+    var appGuideURL3: URL?
+    
     lazy var appInfoContainerView = UIView()
     
     lazy var appIconImageView = UIImageView().then {
@@ -117,6 +122,38 @@ class AppInfoCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configCellWithItem(_ info: AppInfo) {
+        titleLabel.text = info.trackCensoredName
+        
+        appIconURL = URL(string: info.artworkUrl512)
+        appIconImageView.kf.setImage(with: appIconURL)
+        genresLabel.text = info.genres.genresString
+        ratingView.rating = info.averageUserRating
+        
+        if info.screenshotUrls.count > 0 {
+            appGuideURL1 = URL(string: info.screenshotUrls[0])
+            appGuideImage1.kf.setImage(with: appGuideURL1)
+        } else {
+            appGuideImage1.isHidden = true
+        }
+        
+        if info.screenshotUrls.count > 1 {
+            appGuideURL2 = URL(string: info.screenshotUrls[1])
+            appGuideImage2.kf.setImage(with: appGuideURL2)
+        } else {
+            appGuideImage2.isHidden = true
+        }
+        
+        if info.screenshotUrls.count > 2 {
+            appGuideURL3 = URL(string: info.screenshotUrls[2])
+            appGuideImage3.kf.setImage(with: appGuideURL3)
+        } else {
+            appGuideImage3.isHidden = true
+        }
+        
+        ratingLabel.text = info.userRatingCount.ratingString
+    }
+    
     private func setupViews() {
         addSubview(appInfoContainerView)
         appInfoContainerView.addSubview(appIconImageView)
@@ -148,8 +185,8 @@ class AppInfoCell: UICollectionViewCell {
         }
         
         genresLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLabel)
-            $0.centerY.equalTo(appInfoContainerView)
+            $0.leading.trailing.equalTo(titleLabel)
+            $0.centerY.equalToSuperview()
         }
         
         ratingView.snp.makeConstraints {

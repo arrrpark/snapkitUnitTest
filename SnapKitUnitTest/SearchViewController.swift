@@ -107,8 +107,7 @@ class SearchViewController: BaseViewController {
         
         appInfoCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchField.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-ScreenUtil.shared.safeAreaBottomMargin)
         }
     }
@@ -130,6 +129,20 @@ class SearchViewController: BaseViewController {
                 self.searchAppProtocol.isEndReached = true
             }
         }).store(in: &cancelBag)
+    }
+    
+    func saveImage(_ image: UIImage, name: String) -> URL? {
+        guard let data = image.pngData(),
+              let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {
+            return nil
+        }
+        
+        do {
+            try data.write(to: directory.appendingPathComponent(name))
+            return directory.appendingPathComponent(name)
+        } catch {
+            return nil
+        }
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {

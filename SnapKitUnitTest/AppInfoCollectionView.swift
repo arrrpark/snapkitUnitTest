@@ -66,33 +66,7 @@ extension AppInfoCollectionView: UICollectionViewDataSource {
         }
 
         let data = searchAppProtocol.apps.value[indexPath.row]
-        
-        cell.titleLabel.text = data.trackCensoredName
-        
-        let appIconURL = URL(string: data.artworkUrl512)
-        cell.appIconImageView.kf.setImage(with: appIconURL)
-        cell.genresLabel.text = data.genres.genresString
-        cell.ratingView.rating = data.averageUserRating
-        
-        if data.screenshotUrls.count > 0 {
-            cell.appGuideImage1.kf.setImage(with: URL(string: data.screenshotUrls[0]))
-        } else {
-            cell.appGuideImage1.isHidden = true
-        }
-        
-        if data.screenshotUrls.count > 1 {
-            cell.appGuideImage2.kf.setImage(with: URL(string: data.screenshotUrls[1]))
-        } else {
-            cell.appGuideImage2.isHidden = true
-        }
-        
-        if data.screenshotUrls.count > 2 {
-            cell.appGuideImage3.kf.setImage(with: URL(string: data.screenshotUrls[2]))
-        } else {
-            cell.appGuideImage3.isHidden = true
-        }
-        
-        cell.ratingLabel.text = data.userRatingCount.ratingString
+        cell.configCellWithItem(data)
         return cell
     }
 }
