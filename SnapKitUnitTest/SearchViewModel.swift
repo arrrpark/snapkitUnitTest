@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class SearchViewModel: SearchAppProtocol {
+class SearchViewModel {
     var apps = CurrentValueSubject<[AppInfo], Never>([])
     var isFetching = CurrentValueSubject<Bool, Never>(false)
     var isTextFieldFocused = CurrentValueSubject<Bool, Never>(false)

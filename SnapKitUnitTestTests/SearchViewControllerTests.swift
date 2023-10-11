@@ -9,7 +9,7 @@ import XCTest
 import Combine
 @testable import SnapKitUnitTest
 
-final class SnapKitUnitTestTests: XCTestCase {
+final class SearchViewControllerTests: XCTestCase {
     var navigationController: NavigationController!
     var appSearchViewController: SearchViewController!
     
@@ -92,8 +92,6 @@ final class SnapKitUnitTestTests: XCTestCase {
         
         let appInfoCollectionView = appSearchViewController.appInfoCollectionView
         XCTAssertTrue(appInfoCollectionView.backgroundColor == .clear)
-        
-        print(appInfoCollectionView.frame)
         
         XCTAssertTrue(appInfoCollectionView.frame.minX == 0)
         XCTAssertTrue(appInfoCollectionView.frame.minY == searchField.frame.maxY + 10)
@@ -247,6 +245,56 @@ final class SnapKitUnitTestTests: XCTestCase {
         }
     }
     
+    func testNaivagetToDetailViewController() {
+        appSearchViewController.viewDidLoad()
+        appSearchViewController.view.layoutIfNeeded()
+        
+        let navigationController = appSearchViewController.navigationController
+        XCTAssertNotNil(navigationController)
+        XCTAssertTrue(navigationController?.viewControllers.count == 1)
+        
+        appSearchViewController.searchApps("message")
+        appSearchViewController.appInfoCollectionView.collectionView(appSearchViewController.appInfoCollectionView, didSelectItemAt: IndexPath(row: 0, section: 0))
+        
+        var data = appSearchViewController.searchAppProtocol.apps.value[0]
+        let expectation = expectation(description: "detail view controller pushed")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: { [weak self] in
+            guard let self else { return }
+            
+            XCTAssertTrue(navigationController?.viewControllers.count == 2)
+            let detailViewController = navigationController!.popViewController(animated: false) as! DetailViewController
+            
+            detailViewController.appTitle.text = data.trackCensoredName
+            detailViewController.genresLabel.text = data.genres.genresString
+            detailViewController.ratingLabel.text = "\(round(data.averageUserRating * 10) / 10)"
+            detailViewController.ratingView.rating = data.averageUserRating
+            detailViewController.ratingCountLabel.text = "\(data.userRatingCount.ratingString) 개의 평가"
+            detailViewController.ageGuideLabel.text = data.contentAdvisoryRating
+            detailViewController.descriptionLabel.text = data.description
+            
+            data = appSearchViewController.searchAppProtocol.apps.value[1]
+            self.appSearchViewController.appInfoCollectionView.collectionView(appSearchViewController.appInfoCollectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                XCTAssertTrue(navigationController?.viewControllers.count == 2)
+                let detailViewController = navigationController!.popViewController(animated: false) as! DetailViewController
+                
+                detailViewController.appTitle.text = data.trackCensoredName
+                detailViewController.genresLabel.text = data.genres.genresString
+                detailViewController.ratingLabel.text = "\(round(data.averageUserRating * 10) / 10)"
+                detailViewController.ratingView.rating = data.averageUserRating
+                detailViewController.ratingCountLabel.text = "\(data.userRatingCount.ratingString) 개의 평가"
+                detailViewController.ageGuideLabel.text = data.contentAdvisoryRating
+                detailViewController.descriptionLabel.text = data.description
+            })
+            
+            expectation.fulfill()
+        })
+        wait(for: [expectation], timeout: 0.5)
+    }
+    
+    
 }
 
 struct TestUtil {
@@ -280,7 +328,7 @@ class SearchTestViewModel: SearchViewModel {
     override func searchApps(_ name: String) -> Future<SearchResult, NetworkError> {
         return Future<SearchResult, NetworkError> ({ promise in
             guard let data = searchMockData.data(using: .utf8),
-                  var searchData = try? JSONDecoder().decode(SearchResult.self, from: data) else {
+                  let searchData = try? JSONDecoder().decode(SearchResult.self, from: data) else {
                 return promise(.failure(.badForm))
             }
             

@@ -9,16 +9,16 @@ import UIKit
 import Kingfisher
 
 protocol AppInfoCollectionViewDelegate: AnyObject {
-    func newBookCollectionView(_ collectionView: AppInfoCollectionView, didSelectItemAt indexPath: IndexPath)
-    func fetchMoreApps()
+    func appInfoCollectionView(_ collectionView: AppInfoCollectionView, didSelectItemAt indexPath: IndexPath)
+//    func fetchMoreApps()
 }
 
 class AppInfoCollectionView: UICollectionView {
     weak var viewDelegate: AppInfoCollectionViewDelegate?
     
-    let searchAppProtocol: SearchAppProtocol
+    let searchAppProtocol: SearchViewModel
     
-    init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout, searchAppProtocol: SearchAppProtocol) {
+    init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout, searchAppProtocol: SearchViewModel) {
         self.searchAppProtocol = searchAppProtocol
         super.init(frame: frame, collectionViewLayout: layout)
         
@@ -37,7 +37,7 @@ class AppInfoCollectionView: UICollectionView {
 
 extension AppInfoCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewDelegate?.newBookCollectionView(self, didSelectItemAt: indexPath)
+        viewDelegate?.appInfoCollectionView(self, didSelectItemAt: indexPath)
     }
     
 //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

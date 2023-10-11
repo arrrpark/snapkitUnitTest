@@ -15,9 +15,9 @@ class SearchViewController: BaseViewController {
     
     var cancelBag = Set<AnyCancellable>()
     
-    var searchAppProtocol: SearchAppProtocol
+    var searchAppProtocol: SearchViewModel
     
-    init(_ searchAppProtocol: SearchAppProtocol) {
+    init(_ searchAppProtocol: SearchViewModel) {
         self.searchAppProtocol = searchAppProtocol
         super.init(nibName: nil, bundle: nil)
     }
@@ -78,6 +78,7 @@ class SearchViewController: BaseViewController {
     
     lazy var appInfoCollectionView = AppInfoCollectionView(frame: .zero, collectionViewLayout: appInfoCollectionViewFlowLayout, searchAppProtocol: searchAppProtocol).then {
         $0.backgroundColor = .clear
+        $0.viewDelegate = self
     }
     
     override func viewDidLoad() {
@@ -170,5 +171,12 @@ extension SearchViewController: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+extension SearchViewController: AppInfoCollectionViewDelegate {
+    func appInfoCollectionView(_ collectionView: AppInfoCollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailViewController = DetailViewController(detailViewModel: DetailViewModel(appInfo: searchAppProtocol.apps.value[indexPath.row]))
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
