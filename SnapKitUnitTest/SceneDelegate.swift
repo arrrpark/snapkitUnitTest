@@ -12,7 +12,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let scene = (scene as? UIWindowScene) else { return }
@@ -20,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: scene.coordinateSpace.bounds)
         window?.windowScene = scene
         
-        let viewController = NavigationController(rootViewController: SearchViewController(SearchViewModel()))
+        let viewController = NavigationController(rootViewController: SearchViewController(SearchTestViewModel()))
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
     }

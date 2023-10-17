@@ -55,7 +55,7 @@ class AppInfoCell: UICollectionViewCell {
         $0.textColor = Colors.deepGray.rawValue.hexStringToUIColor
     }
     
-    lazy var appGuideImage1 = UIImageView().then {
+    lazy var appGuideImageView1 = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Colors.lightGray.rawValue.hexStringToUIColor.cgColor
@@ -63,7 +63,7 @@ class AppInfoCell: UICollectionViewCell {
         $0.layer.masksToBounds = true
     }
     
-    lazy var appGuideImage2 = UIImageView().then {
+    lazy var appGuideImageView2 = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Colors.lightGray.rawValue.hexStringToUIColor.cgColor
@@ -71,7 +71,7 @@ class AppInfoCell: UICollectionViewCell {
         $0.layer.masksToBounds = true
     }
     
-    lazy var appGuideImage3 = UIImageView().then {
+    lazy var appGuideImageView3 = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.layer.borderWidth = 1
         $0.layer.borderColor = Colors.lightGray.rawValue.hexStringToUIColor.cgColor
@@ -80,22 +80,22 @@ class AppInfoCell: UICollectionViewCell {
     }
     
     lazy var appGuideImagesContainer = UIView().then {
-        $0.addSubview(appGuideImage1)
-        $0.addSubview(appGuideImage2)
-        $0.addSubview(appGuideImage3)
+        $0.addSubview(appGuideImageView1)
+        $0.addSubview(appGuideImageView2)
+        $0.addSubview(appGuideImageView3)
         
-        appGuideImage1.snp.makeConstraints {
+        appGuideImageView1.snp.makeConstraints {
             $0.leading.top.bottom.equalToSuperview()
             $0.width.equalTo(AppInfoCell.appGuideWidth)
         }
         
-        appGuideImage2.snp.makeConstraints {
+        appGuideImageView2.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.width.equalTo(AppInfoCell.appGuideWidth)
             $0.centerX.equalToSuperview()
         }
         
-        appGuideImage3.snp.makeConstraints {
+        appGuideImageView3.snp.makeConstraints {
             $0.top.bottom.trailing.equalToSuperview()
             $0.width.equalTo(AppInfoCell.appGuideWidth)
         }
@@ -126,29 +126,29 @@ class AppInfoCell: UICollectionViewCell {
         titleLabel.text = info.trackCensoredName
         
         appIconURL = URL(string: info.artworkUrl512)
-        appIconImageView.kf.setImage(with: appIconURL)
+        appIconImageView.setImageWithURL(appIconURL)
         genresLabel.text = info.genres.genresString
         ratingView.rating = info.averageUserRating
         
         if info.screenshotUrls.count > 0 {
             appGuideURL1 = URL(string: info.screenshotUrls[0])
-            appGuideImage1.kf.setImage(with: appGuideURL1)
+            appGuideImageView1.setImageWithURL(appGuideURL1)
         } else {
-            appGuideImage1.isHidden = true
+            appGuideImageView1.isHidden = true
         }
         
         if info.screenshotUrls.count > 1 {
             appGuideURL2 = URL(string: info.screenshotUrls[1])
-            appGuideImage2.kf.setImage(with: appGuideURL2)
+            appGuideImageView2.setImageWithURL(appGuideURL2)
         } else {
-            appGuideImage2.isHidden = true
+            appGuideImageView2.isHidden = true
         }
         
         if info.screenshotUrls.count > 2 {
             appGuideURL3 = URL(string: info.screenshotUrls[2])
-            appGuideImage3.kf.setImage(with: appGuideURL3)
+            appGuideImageView3.setImageWithURL(appGuideURL3)
         } else {
-            appGuideImage3.isHidden = true
+            appGuideImageView3.isHidden = true
         }
         
         ratingLabel.text = info.userRatingCount.ratingString

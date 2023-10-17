@@ -7,6 +7,7 @@
 
 import XCTest
 import Combine
+import SnapshotTesting
 @testable import SnapKitUnitTest
 
 final class SearchViewControllerTests: XCTestCase {
@@ -180,7 +181,7 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(frame.maxX == appContainerFrame.maxX - 20)
         XCTAssertTrue(frame.height == AppInfoCell.appGuideWidth / 4 * 7)
         
-        let appGuideImage1 = cell.appGuideImage1
+        let appGuideImage1 = cell.appGuideImageView1
         frame = appGuideImage1.frame
         XCTAssertTrue(appGuideImage1.contentMode == .scaleAspectFit)
         XCTAssertTrue(appGuideImage1.layer.borderWidth == 1)
@@ -193,7 +194,7 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(frame.width == AppInfoCell.appGuideWidth)
         XCTAssertTrue(frame.height == appGuideImagesContainer.frame.height)
         
-        let appGuideImage2 = cell.appGuideImage2
+        let appGuideImage2 = cell.appGuideImageView2
         frame = appGuideImage2.frame
         XCTAssertTrue(appGuideImage2.contentMode == .scaleAspectFit)
         XCTAssertTrue(appGuideImage2.layer.borderWidth == 1)
@@ -206,7 +207,7 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(frame.width == AppInfoCell.appGuideWidth)
         XCTAssertTrue(frame.height == appGuideImagesContainer.frame.height)
         
-        let appGuideImage3 = cell.appGuideImage3
+        let appGuideImage3 = cell.appGuideImageView3
         frame = appGuideImage3.frame
         XCTAssertTrue(appGuideImage3.contentMode == .scaleAspectFit)
         XCTAssertTrue(appGuideImage3.layer.borderWidth == 1)
@@ -294,8 +295,60 @@ final class SearchViewControllerTests: XCTestCase {
         wait(for: [expectation], timeout: 0.5)
     }
     
+    func testInitialState() {
+        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        appSearchViewController.viewDidLoad()
+        appSearchViewController.view.layoutIfNeeded()
+        
+        assertSnapshot(of: appSearchViewController, as: .image(size: size))
+    }
     
+    func testSnapShotCollectionView() {
+        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        appSearchViewController.viewDidLoad()
+        appSearchViewController.view.layoutIfNeeded()
+        
+        appSearchViewController.searchApps("ios")
+        let expectation = expectation(description: "appInfo collectionView snapshot")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+            guard let self else { return }
+            
+            assertSnapshot(of: appSearchViewController, as: .image(size: size))
+            
+            appSearchViewController.appInfoCollectionView.scrollToItem(at: IndexPath(row: 10, section: 0), at: .bottom, animated: false)
+            assertSnapshot(of: appSearchViewController, as: .image(size: size))
+            expectation.fulfill()
+        })
+        wait(for: [expectation], timeout: 0.2)
+    }
 }
+
+
+//class AppInfoCellTest: AppInfoCell {
+//    override func configCellWithItem(_ info: AppInfo) {
+//        super.configCellWithItem(info)
+//        
+//        if info.screenshotUrls.count > 0 {
+//            appGuideImage1.image = UIImage(contentsOfFile: info.screenshotUrls[0])
+//        }
+//        
+//        if info.screenshotUrls.count > 1 {
+//            appGuideImage2.image = UIImage(contentsOfFile: info.screenshotUrls[1])
+//        }
+//        
+//        if info.screenshotUrls.count > 2 {
+//            appGuideImage3.image = UIImage(contentsOfFile: info.screenshotUrls[2])
+//        }
+//    }
+//}
+//
+//class AppInfoCollectionViewTest: AppInfoCollectionView {
+//    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout, searchAppProtocol: SearchViewModel) {
+//        super.init(frame: frame, collectionViewLayout: layout, searchAppProtocol: searchAppProtocol)
+//    }
+//    
+//    
+//}
 
 struct TestUtil {
     private init() { }
@@ -328,10 +381,38 @@ class SearchTestViewModel: SearchViewModel {
     override func searchApps(_ name: String) -> Future<SearchResult, NetworkError> {
         return Future<SearchResult, NetworkError> ({ promise in
             guard let data = searchMockData.data(using: .utf8),
-                  let searchData = try? JSONDecoder().decode(SearchResult.self, from: data) else {
+                  var searchData = try? JSONDecoder().decode(SearchResult.self, from: data) else {
                 return promise(.failure(.badForm))
             }
             
+            var results = searchData.results
+            
+            for i in 0..<results.count {
+                let index = i % 3
+                
+                switch index {
+                case 0:
+                    results[i].artworkUrl512 = Bundle.main.path(forResource: "catIcon", ofType: "jpg")!
+                    results[i].screenshotUrls[0] = Bundle.main.path(forResource: "message1", ofType: "png")!
+                    results[i].screenshotUrls[1] = Bundle.main.path(forResource: "message2", ofType: "png")!
+                    results[i].screenshotUrls[2] = Bundle.main.path(forResource: "message3", ofType: "png")!
+                case 1:
+                    results[i].artworkUrl512 = Bundle.main.path(forResource: "messageIcon", ofType: "jpg")!
+                    results[i].screenshotUrls[0] = Bundle.main.path(forResource: "viber1", ofType: "png")!
+                    results[i].screenshotUrls[1] = Bundle.main.path(forResource: "viber2", ofType: "png")!
+                    results[i].screenshotUrls[2] = Bundle.main.path(forResource: "viber3", ofType: "png")!
+                case 2:
+                    results[i].artworkUrl512 = Bundle.main.path(forResource: "viberIcon", ofType: "jpg")!
+                    results[i].screenshotUrls[0] = Bundle.main.path(forResource: "whatsapp1", ofType: "jpg")!
+                    results[i].screenshotUrls[1] = Bundle.main.path(forResource: "whatsapp2", ofType: "jpg")!
+                    results[i].screenshotUrls[2] = Bundle.main.path(forResource: "whatsapp3", ofType: "jpg")!
+                    
+                default:
+                    break
+                }
+            }
+            
+            searchData.results = results
             promise(.success(searchData))
         })
     }
