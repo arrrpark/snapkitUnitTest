@@ -28,7 +28,6 @@
 		0A88FC802AD2ECFE00469934 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A88FC7E2AD2ECFE00469934 /* LaunchScreen.storyboard */; };
 		0A88FC8B2AD2ECFF00469934 /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC8A2AD2ECFF00469934 /* SearchViewControllerTests.swift */; };
 		0A88FC952AD2ECFF00469934 /* SnapKitUnitTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC942AD2ECFF00469934 /* SnapKitUnitTestUITests.swift */; };
-		0A88FC972AD2ECFF00469934 /* SnapKitUnitTestUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC962AD2ECFF00469934 /* SnapKitUnitTestUITestsLaunchTests.swift */; };
 		0A88FCA52AD2EDDA00469934 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0A88FCA42AD2EDDA00469934 /* SnapKit */; };
 		0A88FCA72AD2EDF900469934 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCA62AD2EDF900469934 /* BaseViewController.swift */; };
 		0A88FCAA2AD2EE6E00469934 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0A88FCA92AD2EE6E00469934 /* Kingfisher */; };
@@ -95,7 +94,6 @@
 		0A88FC8A2AD2ECFF00469934 /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
 		0A88FC902AD2ECFF00469934 /* SnapKitUnitTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapKitUnitTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A88FC942AD2ECFF00469934 /* SnapKitUnitTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapKitUnitTestUITests.swift; sourceTree = "<group>"; };
-		0A88FC962AD2ECFF00469934 /* SnapKitUnitTestUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapKitUnitTestUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0A88FCA62AD2EDF900469934 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		0A88FCB12AD2EF1B00469934 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		0A88FCB62AD2F28E00469934 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
@@ -211,7 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				0A88FC942AD2ECFF00469934 /* SnapKitUnitTestUITests.swift */,
-				0A88FC962AD2ECFF00469934 /* SnapKitUnitTestUITestsLaunchTests.swift */,
 			);
 			path = SnapKitUnitTestUITests;
 			sourceTree = "<group>";
@@ -455,7 +452,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A88FC952AD2ECFF00469934 /* SnapKitUnitTestUITests.swift in Sources */,
-				0A88FC972AD2ECFF00469934 /* SnapKitUnitTestUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -46,7 +46,7 @@ class DetailViewController: BaseViewController {
         $0.layer.borderWidth = 1
         
         let appIconURL = URL(string: detailViewModel.appInfo.artworkUrl512)
-        $0.kf.setImage(with: appIconURL)
+        $0.setImageWithURL(appIconURL)
     }
     
     lazy var appTitle = UILabel().then {

@@ -323,33 +323,6 @@ final class SearchViewControllerTests: XCTestCase {
     }
 }
 
-
-//class AppInfoCellTest: AppInfoCell {
-//    override func configCellWithItem(_ info: AppInfo) {
-//        super.configCellWithItem(info)
-//        
-//        if info.screenshotUrls.count > 0 {
-//            appGuideImage1.image = UIImage(contentsOfFile: info.screenshotUrls[0])
-//        }
-//        
-//        if info.screenshotUrls.count > 1 {
-//            appGuideImage2.image = UIImage(contentsOfFile: info.screenshotUrls[1])
-//        }
-//        
-//        if info.screenshotUrls.count > 2 {
-//            appGuideImage3.image = UIImage(contentsOfFile: info.screenshotUrls[2])
-//        }
-//    }
-//}
-//
-//class AppInfoCollectionViewTest: AppInfoCollectionView {
-//    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout, searchAppProtocol: SearchViewModel) {
-//        super.init(frame: frame, collectionViewLayout: layout, searchAppProtocol: searchAppProtocol)
-//    }
-//    
-//    
-//}
-
 struct TestUtil {
     private init() { }
     

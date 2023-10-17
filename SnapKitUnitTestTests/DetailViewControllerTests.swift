@@ -7,6 +7,7 @@
 
 import XCTest
 import Combine
+import SnapshotTesting
 @testable import SnapKitUnitTest
 
 final class DetailViewControllerTests: XCTestCase {
@@ -39,57 +40,26 @@ final class DetailViewControllerTests: XCTestCase {
     }
     
     func testDetailViewControllerProperlySet() {
-        detailViewController.backImageView.image = UIImage(named: "dummy")
         detailViewController.viewDidLoad()
         detailViewController.view.layoutIfNeeded()
-        detailViewController.backImageView.image = UIImage(systemName: "chevron.left")
-        let outerView = detailViewController.view!
         
         let headerView = detailViewController.headerView
         XCTAssertTrue(headerView.backgroundColor == .white)
         
-        var frame = headerView.frame
-        XCTAssertTrue(frame.minY == outerView.frame.minY + ScreenUtil.shared.safeAreaTopMargin)
-        XCTAssertTrue(frame.minX == outerView.frame.minX)
-        XCTAssertTrue(frame.maxX == outerView.frame.maxX)
-        XCTAssertTrue(frame.height == 40)
-        
         let backButtonView = detailViewController.backButtonView
         XCTAssertTrue(backButtonView.isUserInteractionEnabled)
-        
-        frame = backButtonView.frame
-        XCTAssertTrue(frame.minX == headerView.frame.minX + 10)
-        XCTAssertTrue(frame.minY == 0)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(backButtonView))
-        XCTAssertTrue(abs(detailViewController.searchLabel.frame.minX + detailViewController.searchLabel.frame.width - frame.width + 10) < 0.01)
         
         let backImageView = detailViewController.backImageView
         XCTAssertTrue(backImageView.image == UIImage(systemName: "chevron.left"))
         XCTAssertTrue(backImageView.contentMode == .scaleAspectFit)
         
-        frame = backImageView.frame
-        XCTAssertTrue(frame.width == 20)
-        XCTAssertTrue(frame.height == 20)
-        XCTAssertTrue(frame.minX == 0)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(backImageView))
-        
         let searchLabel = detailViewController.searchLabel
         XCTAssertTrue(searchLabel.text == "Search")
         XCTAssertTrue(searchLabel.textColor == Colors.basicTint.rawValue.hexStringToUIColor)
         
-        frame = searchLabel.frame
-        XCTAssertTrue(abs(frame.minX - backImageView.frame.maxX + 5 - 10) < 0.01)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(searchLabel))
-        
         let containerView = detailViewController.containerView
         XCTAssertFalse(containerView.showsVerticalScrollIndicator)
         XCTAssertFalse(containerView.showsHorizontalScrollIndicator)
-        
-        frame = containerView.frame
-        XCTAssertTrue(frame.minY == ScreenUtil.shared.safeAreaTopMargin)
-        XCTAssertTrue(frame.minX == 0)
-        XCTAssertTrue(frame.width == UIScreen.main.bounds.width)
-        XCTAssertTrue(frame.height == UIScreen.main.bounds.height - ScreenUtil.shared.safeAreaBottomMargin - ScreenUtil.shared.safeAreaTopMargin)
         
         let iconImageView = detailViewController.iconImageView
         XCTAssertTrue(iconImageView.clipsToBounds)
@@ -97,31 +67,16 @@ final class DetailViewControllerTests: XCTestCase {
         XCTAssertTrue(iconImageView.layer.borderColor == Colors.lightGray.rawValue.hexStringToUIColor.cgColor)
         XCTAssertTrue(iconImageView.layer.borderWidth == 1)
         
-        frame = iconImageView.frame
-        XCTAssertTrue(frame.width == 80)
-        XCTAssertTrue(frame.height == 80)
-        XCTAssertTrue(frame.minY == 50)
-        XCTAssertTrue(frame.minX == containerView.frame.minX + 20)
-        
         let appTitle = detailViewController.appTitle
         XCTAssertTrue(appTitle.textColor == .black)
         XCTAssertTrue(appTitle.font == UIFont.boldSystemFont(ofSize: 18))
         XCTAssertTrue(appTitle.text == detailViewModel.appInfo.trackCensoredName)
         XCTAssertTrue(appTitle.numberOfLines == 1)
         
-        frame = appTitle.frame
-        XCTAssertTrue(frame.minY == iconImageView.frame.minY)
-        XCTAssertTrue(frame.minX == iconImageView.frame.maxX + 15)
-        XCTAssertTrue(frame.width == UIScreen.main.bounds.width - 130)
-        
         let genresLabel = detailViewController.genresLabel
         XCTAssertTrue(genresLabel.textColor == Colors.deepGray.rawValue.hexStringToUIColor)
         XCTAssertTrue(genresLabel.font == UIFont.systemFont(ofSize: 12))
         XCTAssertTrue(genresLabel.text == detailViewModel.appInfo.genres.genresString)
-        
-        frame = genresLabel.frame
-        XCTAssertTrue(abs(frame.minY - appTitle.frame.maxY + 5 - 10) < 0.01)
-        XCTAssertTrue(frame.width == appTitle.frame.width)
         
         let downloadButton = detailViewController.downloadButton
         XCTAssertTrue(downloadButton.titleColor(for: .normal) == .white)
@@ -130,20 +85,10 @@ final class DetailViewControllerTests: XCTestCase {
         XCTAssertTrue(downloadButton.backgroundColor == Colors.basicTint.rawValue.hexStringToUIColor)
         XCTAssertTrue(downloadButton.layer.cornerRadius == 10)
         
-        frame = downloadButton.frame
-        XCTAssertTrue(frame.maxY == iconImageView.frame.maxY)
-        XCTAssertTrue(frame.minX == genresLabel.frame.minX)
-        XCTAssertTrue(frame.width == 85)
-        XCTAssertTrue(frame.height == 25)
-
         let ratingLabel = detailViewController.ratingLabel
         XCTAssertTrue(ratingLabel.textColor == Colors.deepGray.rawValue.hexStringToUIColor)
         XCTAssertTrue(ratingLabel.font == UIFont.boldSystemFont(ofSize: 18))
         XCTAssertTrue(ratingLabel.text == "\(round(detailViewModel.appInfo.averageUserRating * 10) / 10)")
-        
-        frame = ratingLabel.frame
-        XCTAssertTrue(frame.minX == 0)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(ratingLabel))
         
         let ratingView = detailViewController.ratingView
         XCTAssertFalse(ratingView.settings.updateOnTouch)
@@ -154,19 +99,10 @@ final class DetailViewControllerTests: XCTestCase {
         XCTAssertTrue(ratingView.settings.fillMode == .precise)
         XCTAssertTrue(ratingView.rating == detailViewModel.appInfo.averageUserRating)
         
-        frame = ratingView.frame
-        XCTAssertTrue(ratingLabel.frame.maxX + 10 - frame.minX < 0.01)
-        XCTAssertTrue(frame.width == 100)
-        XCTAssertTrue(frame.height == 20)
-        
         let ratingCountLabel = detailViewController.ratingCountLabel
         XCTAssertTrue(ratingCountLabel.textColor == Colors.gray.rawValue.hexStringToUIColor)
         XCTAssertTrue(ratingCountLabel.font == UIFont.systemFont(ofSize: 12))
         XCTAssertTrue(ratingCountLabel.text == "\(detailViewModel.appInfo.userRatingCount.ratingString) 개의 평가")
-        
-        frame = ratingCountLabel.frame
-        XCTAssertTrue(abs(frame.minX - ratingLabel.frame.maxY + 5 + 15) < 0.01)
-        XCTAssertTrue(frame.minX == ratingLabel.frame.minX)
         
         let ageGuideLabel = detailViewController.ageGuideLabel
         XCTAssertTrue(ageGuideLabel.textColor == Colors.deepGray.rawValue.hexStringToUIColor)
@@ -200,5 +136,21 @@ final class DetailViewControllerTests: XCTestCase {
         XCTAssertTrue(viewMoreLabel.textColor == Colors.basicTint.rawValue.hexStringToUIColor)
         XCTAssertTrue(viewMoreLabel.isUserInteractionEnabled == true)
         XCTAssertTrue(viewMoreLabel.gestureRecognizers!.count == 1 && viewMoreLabel.gestureRecognizers!.first is UITapGestureRecognizer)
+    }
+    
+    func testDetailSnapshot() {
+        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        detailViewController.viewDidLoad()
+        detailViewController.view.layoutIfNeeded()
+        
+        assertSnapshot(of: detailViewController, as: .image(size: size))
+        
+        detailViewModel = DetailViewModel(appInfo: appInfo[1])
+        detailViewController = DetailViewController(detailViewModel: detailViewModel)
+        
+        detailViewController.viewDidLoad()
+        detailViewController.view.layoutIfNeeded()
+        
+        assertSnapshot(of: detailViewController, as: .image(size: size))
     }
 }

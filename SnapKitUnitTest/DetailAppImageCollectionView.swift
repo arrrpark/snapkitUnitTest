@@ -57,7 +57,7 @@ extension DetailAppImageCollectionView: UICollectionViewDataSource {
         let imageUrl = detailViewModel.appInfo.screenshotUrls[indexPath.row]
         
         let appGuideURL = URL(string: imageUrl)
-        cell.appGuideImage.kf.setImage(with: appGuideURL)
+        cell.appGuideImage.setImageWithURL(appGuideURL)
         return cell
     }
 }
