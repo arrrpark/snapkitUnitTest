@@ -21,6 +21,11 @@
 		0A6C40522AD3C3FF001A3DD2 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 0A6C40512AD3C3FF001A3DD2 /* Cosmos */; };
 		0A6C40542AD3C66D001A3DD2 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C40532AD3C66D001A3DD2 /* Int+Extension.swift */; };
 		0A7821C12ADE84A100DC9395 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7821C02ADE84A100DC9395 /* SnapshotTesting */; };
+		0A7D14332ADFA9440073F15B /* RecentSearchWord.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D14312ADFA9440073F15B /* RecentSearchWord.xcdatamodeld */; };
+		0A7D14352ADFA9890073F15B /* RecentWordDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D14342ADFA9890073F15B /* RecentWordDAO.swift */; };
+		0A7D14372ADFAA2A0073F15B /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D14362ADFAA2A0073F15B /* Date+Extension.swift */; };
+		0A7D143A2ADFAAA20073F15B /* RecentWordCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D14392ADFAAA20073F15B /* RecentWordCollectionView.swift */; };
+		0A7D143C2ADFAAD00073F15B /* RecentWordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D143B2ADFAAD00073F15B /* RecentWordCell.swift */; };
 		0A88FC742AD2ECFD00469934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC732AD2ECFD00469934 /* AppDelegate.swift */; };
 		0A88FC762AD2ECFD00469934 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC752AD2ECFD00469934 /* SceneDelegate.swift */; };
 		0A88FC782AD2ECFD00469934 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC772AD2ECFD00469934 /* SearchViewController.swift */; };
@@ -83,6 +88,11 @@
 		0A6C404C2AD3C39A001A3DD2 /* AppInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoCell.swift; sourceTree = "<group>"; };
 		0A6C404E2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoCollectionView.swift; sourceTree = "<group>"; };
 		0A6C40532AD3C66D001A3DD2 /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
+		0A7D14322ADFA9440073F15B /* RecentSearchWord.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecentSearchWord.xcdatamodel; sourceTree = "<group>"; };
+		0A7D14342ADFA9890073F15B /* RecentWordDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentWordDAO.swift; sourceTree = "<group>"; };
+		0A7D14362ADFAA2A0073F15B /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		0A7D14392ADFAAA20073F15B /* RecentWordCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentWordCollectionView.swift; sourceTree = "<group>"; };
+		0A7D143B2ADFAAD00073F15B /* RecentWordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentWordCell.swift; sourceTree = "<group>"; };
 		0A88FC702AD2ECFD00469934 /* SnapKitUnitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnapKitUnitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A88FC732AD2ECFD00469934 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A88FC752AD2ECFD00469934 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -148,6 +158,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A7D14382ADFAA3F0073F15B /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				0A7D14312ADFA9440073F15B /* RecentSearchWord.xcdatamodeld */,
+				0A7D14342ADFA9890073F15B /* RecentWordDAO.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		0A88FC672AD2ECFD00469934 = {
 			isa = PBXGroup;
 			children = (
@@ -175,10 +194,12 @@
 				0A88FC752AD2ECFD00469934 /* SceneDelegate.swift */,
 				0A88FCA62AD2EDF900469934 /* BaseViewController.swift */,
 				0A88FCB12AD2EF1B00469934 /* NavigationController.swift */,
+				0A6C403F2AD3ADDF001A3DD2 /* Colors.swift */,
+				0A7D14382ADFAA3F0073F15B /* CoreData */,
+				0A88FCC02AD2FE4200469934 /* Extensions */,
+				0A88FCB52AD2F27D00469934 /* Model */,
 				0A88FCBA2AD2F30100469934 /* ScreenUtil.swift */,
 				0A6C40412AD3AF8E001A3DD2 /* AlamofireWrapper.swift */,
-				0A6C403F2AD3ADDF001A3DD2 /* Colors.swift */,
-				0A88FCB52AD2F27D00469934 /* Model */,
 				0A6C404C2AD3C39A001A3DD2 /* AppInfoCell.swift */,
 				0A6C404E2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift */,
 				0A88FC772AD2ECFD00469934 /* SearchViewController.swift */,
@@ -187,10 +208,11 @@
 				0A40187C2AD5319500268C8E /* DetailAppImageCell.swift */,
 				0A4018762AD5311800268C8E /* DetailViewController.swift */,
 				0A4018782AD5311E00268C8E /* DetailVIewModel.swift */,
-				0A88FCC02AD2FE4200469934 /* Extensions */,
-				0A88FC7C2AD2ECFE00469934 /* Assets.xcassets */,
-				0AD06FDC2AD40FDE0009A1CB /* ImagesForTest */,
+				0A7D14392ADFAAA20073F15B /* RecentWordCollectionView.swift */,
+				0A7D143B2ADFAAD00073F15B /* RecentWordCell.swift */,
 				0A88FC7E2AD2ECFE00469934 /* LaunchScreen.storyboard */,
+				0AD06FDC2AD40FDE0009A1CB /* ImagesForTest */,
+				0A88FC7C2AD2ECFE00469934 /* Assets.xcassets */,
 				0A88FC812AD2ECFE00469934 /* Info.plist */,
 			);
 			path = SnapKitUnitTest;
@@ -229,6 +251,7 @@
 				0A88FCBE2AD2F73600469934 /* UITextField+Extension.swift */,
 				0A6C40532AD3C66D001A3DD2 /* Int+Extension.swift */,
 				0AF0563E2ADEC0970007F47D /* UIImageView+Extension.swift */,
+				0A7D14362ADFAA2A0073F15B /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -419,14 +442,18 @@
 				0A6C40402AD3ADDF001A3DD2 /* Colors.swift in Sources */,
 				0A6C40542AD3C66D001A3DD2 /* Int+Extension.swift in Sources */,
 				0A40187D2AD5319500268C8E /* DetailAppImageCell.swift in Sources */,
+				0A7D14372ADFAA2A0073F15B /* Date+Extension.swift in Sources */,
 				0A88FC782AD2ECFD00469934 /* SearchViewController.swift in Sources */,
 				0A4018792AD5311E00268C8E /* DetailVIewModel.swift in Sources */,
 				0A88FCA72AD2EDF900469934 /* BaseViewController.swift in Sources */,
+				0A7D14352ADFA9890073F15B /* RecentWordDAO.swift in Sources */,
 				0A40187B2AD5314700268C8E /* DetailAppImageCollectionView.swift in Sources */,
 				0AF0563F2ADEC0970007F47D /* UIImageView+Extension.swift in Sources */,
+				0A7D143C2ADFAAD00073F15B /* RecentWordCell.swift in Sources */,
 				0A88FCBF2AD2F73600469934 /* UITextField+Extension.swift in Sources */,
 				0A88FCB92AD2F29900469934 /* SearchResult.swift in Sources */,
 				0A4018772AD5311800268C8E /* DetailViewController.swift in Sources */,
+				0A7D143A2ADFAAA20073F15B /* RecentWordCollectionView.swift in Sources */,
 				0A6C40442AD3B002001A3DD2 /* SearchViewModel.swift in Sources */,
 				0A88FCB22AD2EF1B00469934 /* NavigationController.swift in Sources */,
 				0A6C404F2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift in Sources */,
@@ -434,6 +461,7 @@
 				0A6C404D2AD3C39A001A3DD2 /* AppInfoCell.swift in Sources */,
 				0A88FC762AD2ECFD00469934 /* SceneDelegate.swift in Sources */,
 				0A88FCBD2AD2F64900469934 /* String+Extension.swift in Sources */,
+				0A7D14332ADFA9440073F15B /* RecentSearchWord.xcdatamodeld in Sources */,
 				0A88FCB72AD2F28E00469934 /* AppInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -869,6 +897,19 @@
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		0A7D14312ADFA9440073F15B /* RecentSearchWord.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0A7D14322ADFA9440073F15B /* RecentSearchWord.xcdatamodel */,
+			);
+			currentVersion = 0A7D14322ADFA9440073F15B /* RecentSearchWord.xcdatamodel */;
+			path = RecentSearchWord.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0A88FC682AD2ECFD00469934 /* Project object */;
 }

@@ -215,5 +215,13 @@ class AppInfoCell: UICollectionViewCell {
             $0.height.equalTo(AppInfoCell.appGuideWidth / 4 * 7)
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        appGuideImageView1.isHidden = false
+        appGuideImageView2.isHidden = false
+        appGuideImageView3.isHidden = false
+    }
 }
 

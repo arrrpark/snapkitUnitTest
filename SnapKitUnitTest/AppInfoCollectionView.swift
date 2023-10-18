@@ -10,7 +10,7 @@ import Kingfisher
 
 protocol AppInfoCollectionViewDelegate: AnyObject {
     func appInfoCollectionView(_ collectionView: AppInfoCollectionView, didSelectItemAt indexPath: IndexPath)
-//    func fetchMoreApps()
+    func fetchMoreApps()
 }
 
 class AppInfoCollectionView: UICollectionView {
@@ -40,15 +40,15 @@ extension AppInfoCollectionView: UICollectionViewDelegate {
         viewDelegate?.appInfoCollectionView(self, didSelectItemAt: indexPath)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        guard indexPath.row == searchAppProtocol.apps.value.count - 1,
-//              !searchAppProtocol.isFetching.value,
-//              !searchAppProtocol.isEndReached else {
-//            return
-//        }
-//        
-//        viewDelegate?.fetchMoreApps()
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard indexPath.row == searchAppProtocol.apps.value.count - 1,
+              !searchAppProtocol.isFetching.value,
+              !searchAppProtocol.isEndReached else {
+            return
+        }
+        
+        viewDelegate?.fetchMoreApps()
+    }
 }
 
 extension AppInfoCollectionView: UICollectionViewDataSource {

@@ -110,7 +110,7 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertNotNil(appInfoCollectionView.dataSource)
         
         appSearchViewController.searchApps("message")
-        XCTAssertEqual(appSearchViewController.searchAppProtocol.apps.value.count, 15)
+        XCTAssertEqual(appSearchViewController.searchViewModel.apps.value.count, 15)
         XCTAssertEqual(appInfoCollectionView.numberOfItems(inSection: 0), 15)
 
         var cell = appInfoCollectionView.dataSource?.collectionView(appInfoCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as! AppInfoCell
@@ -231,8 +231,8 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(downloadButton.layer.cornerRadius == 12)
         XCTAssertTrue(downloadButton.titleLabel?.font == UIFont.boldSystemFont(ofSize: 12))
         
-        for i in 0..<self.appSearchViewController.searchAppProtocol.apps.value.count {
-            let data = self.appSearchViewController.searchAppProtocol.apps.value[i]
+        for i in 0..<self.appSearchViewController.searchViewModel.apps.value.count {
+            let data = self.appSearchViewController.searchViewModel.apps.value[i]
             cell = appInfoCollectionView.dataSource?.collectionView(appInfoCollectionView, cellForItemAt: IndexPath(row: i, section: 0)) as! AppInfoCell
             
             XCTAssertTrue(cell.genresLabel.text == data.genres.genresString)
@@ -257,7 +257,7 @@ final class SearchViewControllerTests: XCTestCase {
         appSearchViewController.searchApps("message")
         appSearchViewController.appInfoCollectionView.collectionView(appSearchViewController.appInfoCollectionView, didSelectItemAt: IndexPath(row: 0, section: 0))
         
-        var data = appSearchViewController.searchAppProtocol.apps.value[0]
+        var data = appSearchViewController.searchViewModel.apps.value[0]
         let expectation = expectation(description: "detail view controller pushed")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: { [weak self] in
@@ -274,7 +274,7 @@ final class SearchViewControllerTests: XCTestCase {
             detailViewController.ageGuideLabel.text = data.contentAdvisoryRating
             detailViewController.descriptionLabel.text = data.description
             
-            data = appSearchViewController.searchAppProtocol.apps.value[1]
+            data = appSearchViewController.searchViewModel.apps.value[1]
             self.appSearchViewController.appInfoCollectionView.collectionView(appSearchViewController.appInfoCollectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {

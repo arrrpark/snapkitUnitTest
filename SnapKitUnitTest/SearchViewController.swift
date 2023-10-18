@@ -15,10 +15,10 @@ class SearchViewController: BaseViewController {
     
     var cancelBag = Set<AnyCancellable>()
     
-    var searchAppProtocol: SearchViewModel
+    var searchViewModel: SearchViewModel
     
-    init(_ searchAppProtocol: SearchViewModel) {
-        self.searchAppProtocol = searchAppProtocol
+    init(_ searchViewModel: SearchViewModel) {
+        self.searchViewModel = searchViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,7 +39,6 @@ class SearchViewController: BaseViewController {
         
         $0.isUserInteractionEnabled = true
         $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTextDeletePressed)))
-        //        $0.accessibilityIdentifier = SVIdentifiers.deleteIcon.rawValue
     }
     
     lazy var searchField = UITextField().then  {
@@ -67,7 +66,18 @@ class SearchViewController: BaseViewController {
         $0.delegate = self
         $0.layer.cornerRadius = 5
         $0.clipsToBounds = true
-        //        $0.accessibilityIdentifier = SVIdentifiers.searchField.rawValue
+        $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+    }
+    
+    lazy var recentWordsFlowLayout = UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .vertical
+        $0.minimumLineSpacing = 0
+        $0.minimumInteritemSpacing = 0
+    }
+    
+    lazy var recentWordCollectionView = RecentWordCollectionView(frame: .zero, collectionViewLayout: recentWordsFlowLayout, searchViewModel: searchViewModel).then {
+        $0.backgroundColor = .clear
+//        $0.viewDelegate = self
     }
     
     lazy var appInfoCollectionViewFlowLayout = UICollectionViewFlowLayout().then {
@@ -76,7 +86,7 @@ class SearchViewController: BaseViewController {
         $0.minimumInteritemSpacing = 0
     }
     
-    lazy var appInfoCollectionView = AppInfoCollectionView(frame: .zero, collectionViewLayout: appInfoCollectionViewFlowLayout, searchAppProtocol: searchAppProtocol).then {
+    lazy var appInfoCollectionView = AppInfoCollectionView(frame: .zero, collectionViewLayout: appInfoCollectionViewFlowLayout, searchAppProtocol: searchViewModel).then {
         $0.backgroundColor = .clear
         $0.viewDelegate = self
     }
@@ -88,13 +98,28 @@ class SearchViewController: BaseViewController {
             self?.deleteIcon.isHidden = (text?.count == 0)
         }).store(in: &cancelBag)
         
-        searchAppProtocol.apps.sink(receiveValue: { [weak self] apps in
+        searchViewModel.apps.sink(receiveValue: { [weak self] apps in
             self?.appInfoCollectionView.reloadData()
+        }).store(in: &cancelBag)
+        
+        searchViewModel.isTextFieldFocused
+            .combineLatest(searchViewModel.isTextFieldCharacterExists, searchViewModel.apps)
+            .sink(receiveValue: { [weak self] isFocused, isCharacterExists, apps in
+                guard let self else { return }
+                
+                self.deleteIcon.isHidden = !(isFocused && isCharacterExists)
+                self.recentWordCollectionView.isHidden = !(isFocused && isCharacterExists)
+                self.appInfoCollectionView.isHidden = !self.recentWordCollectionView.isHidden
+            }).store(in: &cancelBag)
+        
+        searchViewModel.searchedWords.sink(receiveValue: { [weak self] _ in
+            self?.recentWordCollectionView.reloadData()
         }).store(in: &cancelBag)
     }
     
     override func addSubviews() {
         view.addSubview(searchField)
+        view.addSubview(recentWordCollectionView)
         view.addSubview(appInfoCollectionView)
     }
     
@@ -106,6 +131,12 @@ class SearchViewController: BaseViewController {
             $0.height.equalTo(30)
         }
         
+        recentWordCollectionView.snp.makeConstraints {
+            $0.top.equalTo(searchField.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-ScreenUtil.shared.safeAreaBottomMargin)
+        }
+        
         appInfoCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchField.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview()
@@ -114,21 +145,30 @@ class SearchViewController: BaseViewController {
     }
     
     func searchApps(_ name: String) {
-        searchAppProtocol.searchApps(name).sink(receiveCompletion: { _ in
+        guard !searchViewModel.isFetching.value else { return }
+        
+        searchViewModel.isFetching.value = true
+        searchViewModel.searchApps(name).sink(receiveCompletion: { _ in
             
         }, receiveValue: { [weak self] value in
             guard let self else { return }
             
-            var existingApps = searchAppProtocol.apps.value
+            var existingApps = searchViewModel.apps.value
             existingApps.append(contentsOf: value.results)
             
-            self.searchAppProtocol.apps.value = existingApps
-            self.searchAppProtocol.isFetching.value = false
-            self.searchAppProtocol.pageIndex += 1
+            self.searchViewModel.apps.value = existingApps
+            self.searchViewModel.isFetching.value = false
+            self.searchViewModel.pageIndex += 1
             
             if value.results.count < 10 {
-                self.searchAppProtocol.isEndReached = true
+                self.searchViewModel.isEndReached = true
             }
+            
+            if value.results.count > 0 {
+                RecentWordDAO.shared.saveOrUpdate(name)
+            }
+            
+            print("count: \(self.searchViewModel.apps.value.count)")
         }).store(in: &cancelBag)
     }
     
@@ -146,10 +186,19 @@ class SearchViewController: BaseViewController {
         }
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        searchViewModel.isTextFieldFocused.value = true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        searchViewModel.isTextFieldFocused.value = false
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
         
-        deleteIcon.isHidden = text.count == 0
+        searchViewModel.isTextFieldCharacterExists.value = text.count > 0
+        searchViewModel.searchedWords.value = RecentWordDAO.shared.getWords(text)
     }
     
     @objc func onTextDeletePressed() {
@@ -164,9 +213,8 @@ extension SearchViewController: UITextFieldDelegate {
         
         if let text = textField.text,
            text.count > 0 {
-            searchAppProtocol.initialize()
-            searchAppProtocol.isFetching.value = true
-            searchAppProtocol.word = text
+            searchViewModel.initialize()
+            searchViewModel.word = text
             searchApps(text)
         }
         
@@ -176,7 +224,11 @@ extension SearchViewController: UITextFieldDelegate {
 
 extension SearchViewController: AppInfoCollectionViewDelegate {
     func appInfoCollectionView(_ collectionView: AppInfoCollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(detailViewModel: DetailViewModel(appInfo: searchAppProtocol.apps.value[indexPath.row]))
+        let detailViewController = DetailViewController(detailViewModel: DetailViewModel(appInfo: searchViewModel.apps.value[indexPath.row]))
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func fetchMoreApps() {
+        searchApps(searchViewModel.word)
     }
 }
