@@ -45,16 +45,13 @@ final class DetailViewControllerTests: XCTestCase {
         let headerView = detailViewController.headerView
         XCTAssertTrue(headerView.backgroundColor == .white)
         
-        let backButtonView = detailViewController.backButtonView
-        XCTAssertTrue(backButtonView.isUserInteractionEnabled)
+        let backButtonConfig = detailViewController.backButtonConfig
+        XCTAssertTrue(backButtonConfig.title == "Search")
+        XCTAssertTrue(backButtonConfig.image == UIImage(systemName: "chevron.left"))
+        XCTAssertTrue(backButtonConfig.imagePadding == 5)
         
-        let backImageView = detailViewController.backImageView
-        XCTAssertTrue(backImageView.image == UIImage(systemName: "chevron.left"))
-        XCTAssertTrue(backImageView.contentMode == .scaleAspectFit)
-        
-        let searchLabel = detailViewController.searchLabel
-        XCTAssertTrue(searchLabel.text == "Search")
-        XCTAssertTrue(searchLabel.textColor == Colors.basicTint.rawValue.hexStringToUIColor)
+        let backButtonView = detailViewController.backButton
+        XCTAssertTrue(backButtonView.titleColor(for: .normal) == Colors.basicTint.rawValue.hexStringToUIColor)
         
         let containerView = detailViewController.containerView
         XCTAssertFalse(containerView.showsVerticalScrollIndicator)
@@ -101,7 +98,7 @@ final class DetailViewControllerTests: XCTestCase {
         let ratingCountLabel = detailViewController.ratingCountLabel
         XCTAssertTrue(ratingCountLabel.textColor == Colors.gray.rawValue.hexStringToUIColor)
         XCTAssertTrue(ratingCountLabel.font == UIFont.systemFont(ofSize: 12))
-        XCTAssertTrue(ratingCountLabel.text == "\(detailViewModel.appInfo.userRatingCount.ratingString) 개의 평가")
+        XCTAssertTrue(ratingCountLabel.text == "\(detailViewModel.appInfo.userRatingCount.ratingString) RATINGS")
         
         let ageGuideLabel = detailViewController.ageGuideLabel
         XCTAssertTrue(ageGuideLabel.textColor == Colors.deepGray.rawValue.hexStringToUIColor)
@@ -128,13 +125,11 @@ final class DetailViewControllerTests: XCTestCase {
         XCTAssertTrue(descriptionLabel.numberOfLines == 3)
         XCTAssertTrue(descriptionLabel.lineBreakMode == .byTruncatingTail)
         
-        let viewMoreLabel = detailViewController.viewMoreLabel
-        XCTAssertTrue(viewMoreLabel.text == "more")
-        XCTAssertTrue(viewMoreLabel.backgroundColor == .white)
-        XCTAssertTrue(viewMoreLabel.font == UIFont.systemFont(ofSize: 12))
-        XCTAssertTrue(viewMoreLabel.textColor == Colors.basicTint.rawValue.hexStringToUIColor)
-        XCTAssertTrue(viewMoreLabel.isUserInteractionEnabled == true)
-        XCTAssertTrue(viewMoreLabel.gestureRecognizers!.count == 1 && viewMoreLabel.gestureRecognizers!.first is UITapGestureRecognizer)
+        let viewMoreButton = detailViewController.viewMoreButton
+        XCTAssertTrue(viewMoreButton.title(for: .normal) == "more")
+        XCTAssertTrue(viewMoreButton.backgroundColor == .clear)
+        XCTAssertTrue(viewMoreButton.titleLabel?.font == UIFont.systemFont(ofSize: 12))
+        XCTAssertTrue(viewMoreButton.titleColor(for: .normal) == Colors.basicTint.rawValue.hexStringToUIColor)
     }
     
     func testDetailSnapshot() {
@@ -144,11 +139,21 @@ final class DetailViewControllerTests: XCTestCase {
         
         assertSnapshot(of: detailViewController, as: .image(size: size))
         
+        detailViewController.viewMoreButton.sendActions(for: .touchUpInside)
+        detailViewController.containerView.setContentOffset(CGPoint(x: 0, y: detailViewController.containerView.frame.height), animated: false)
+        
+        assertSnapshot(of: detailViewController, as: .image(size: size))
+        
         detailViewModel = DetailViewModel(appInfo: appInfo[1])
         detailViewController = DetailViewController(detailViewModel: detailViewModel)
         
         detailViewController.viewDidLoad()
         detailViewController.view.layoutIfNeeded()
+        
+        assertSnapshot(of: detailViewController, as: .image(size: size))
+        
+        detailViewController.viewMoreButton.sendActions(for: .touchUpInside)
+        detailViewController.containerView.setContentOffset(CGPoint(x: 0, y: detailViewController.containerView.frame.height), animated: false)
         
         assertSnapshot(of: detailViewController, as: .image(size: size))
     }

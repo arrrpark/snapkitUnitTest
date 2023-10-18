@@ -100,11 +100,11 @@ class SearchViewController: BaseViewController {
             self.searchViewModel.searchedWords.accept(RecentWordDAO.shared.getWords(text))
         }).disposed(by: disposeBag)
         
-        searchField.rx.controlEvent(.editingDidBegin).subscribe(onNext:{[weak self] in
+        searchField.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
             self?.searchViewModel.isSearchFieldFocused.accept(true)
         }).disposed(by: disposeBag)
         
-        searchField.rx.controlEvent(.editingDidEnd).subscribe(onNext:{[weak self] in
+        searchField.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] in
             self?.searchViewModel.isSearchFieldFocused.accept(false)
         }).disposed(by: disposeBag)
         

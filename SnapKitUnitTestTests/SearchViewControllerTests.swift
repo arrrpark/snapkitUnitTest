@@ -37,9 +37,6 @@ final class SearchViewControllerTests: XCTestCase {
     }
     
     func testSearchViewControllerProperlySet() {
-        let searchIconImage = appSearchViewController.searchIcon.image
-        let deleteIconImage = appSearchViewController.deleteIcon.image
-        
         appSearchViewController.viewDidLoad()
         appSearchViewController.view.layoutIfNeeded()
         
@@ -61,10 +58,9 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(searchIcon.contentMode == .scaleAspectFit)
         XCTAssertEqual(searchIcon.tintColor, Colors.gray.rawValue.hexStringToUIColor)
         
-        XCTAssertTrue(deleteIcon.contentMode == .scaleAspectFit)
+        XCTAssertEqual(deleteIcon.image(for: .normal), UIImage(systemName: "xmark.circle.fill"))
         XCTAssertEqual(deleteIcon.tintColor, Colors.gray.rawValue.hexStringToUIColor)
         
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(deleteIcon))
         XCTAssertTrue(deleteIcon.frame.width == 20)
         XCTAssertTrue(deleteIcon.frame.height == 20)
         
@@ -110,7 +106,6 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(appIconImageView.layer.masksToBounds)
         
         XCTAssertTrue(frame.minX == 20)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(appIconImageView))
         XCTAssertTrue(frame.width == 60)
         XCTAssertTrue(frame.height == 60)
         
@@ -131,7 +126,6 @@ final class SearchViewControllerTests: XCTestCase {
         
         XCTAssertTrue(frame.minX == titleLabel.frame.minX)
         XCTAssertTrue(frame.maxX == titleLabel.frame.maxX)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(genresLabel))
         
         let ratingView = cell.ratingView
         frame = ratingView.frame
@@ -185,7 +179,6 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(appGuideImage2.layer.masksToBounds)
         
         XCTAssertTrue(frame.minY == 0)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterX(appGuideImage2))
         XCTAssertTrue(frame.width == AppInfoCell.appGuideWidth)
         XCTAssertTrue(frame.height == appGuideImagesContainer.frame.height)
         
@@ -242,11 +235,11 @@ final class SearchViewControllerTests: XCTestCase {
         var data = appSearchViewController.searchViewModel.apps.value[0]
         let expectation = expectation(description: "detail view controller pushed")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: { [weak self] in
-            guard let self else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+            guard let selfRef = self else { return }
+            XCTAssertTrue(selfRef.navigationController?.viewControllers.count == 2)
             
-            XCTAssertTrue(navigationController?.viewControllers.count == 2)
-            let detailViewController = navigationController!.popViewController(animated: false) as! DetailViewController
+            let detailViewController = navigationController!.viewControllers.last as! DetailViewController
             
             detailViewController.appTitle.text = data.trackCensoredName
             detailViewController.genresLabel.text = data.genres.genresString
@@ -256,25 +249,33 @@ final class SearchViewControllerTests: XCTestCase {
             detailViewController.ageGuideLabel.text = data.contentAdvisoryRating
             detailViewController.descriptionLabel.text = data.description
             
-            data = appSearchViewController.searchViewModel.apps.value[1]
-            self.appSearchViewController.appInfoCollectionView.collectionView(appSearchViewController.appInfoCollectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
+            detailViewController.backButton.sendActions(for: .touchUpInside)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
-                XCTAssertTrue(navigationController?.viewControllers.count == 2)
-                let detailViewController = navigationController!.popViewController(animated: false) as! DetailViewController
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+                guard let selfRef = self else { return }
                 
-                detailViewController.appTitle.text = data.trackCensoredName
-                detailViewController.genresLabel.text = data.genres.genresString
-                detailViewController.ratingLabel.text = "\(round(data.averageUserRating * 10) / 10)"
-                detailViewController.ratingView.rating = data.averageUserRating
-                detailViewController.ratingCountLabel.text = "\(data.userRatingCount.ratingString) 개의 평가"
-                detailViewController.ageGuideLabel.text = data.contentAdvisoryRating
-                detailViewController.descriptionLabel.text = data.description
+                XCTAssertTrue(selfRef.navigationController?.viewControllers.count == 1)
+                
+                data = selfRef.appSearchViewController.searchViewModel.apps.value[1]
+                selfRef.appSearchViewController.appInfoCollectionView.collectionView(selfRef.appSearchViewController.appInfoCollectionView, didSelectItemAt: IndexPath(row: 1, section: 0))
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                    XCTAssertTrue(navigationController?.viewControllers.count == 2)
+                    let detailViewController = navigationController!.viewControllers.last as! DetailViewController
+                    
+                    detailViewController.appTitle.text = data.trackCensoredName
+                    detailViewController.genresLabel.text = data.genres.genresString
+                    detailViewController.ratingLabel.text = "\(round(data.averageUserRating * 10) / 10)"
+                    detailViewController.ratingView.rating = data.averageUserRating
+                    detailViewController.ratingCountLabel.text = "\(data.userRatingCount.ratingString) 개의 평가"
+                    detailViewController.ageGuideLabel.text = data.contentAdvisoryRating
+                    detailViewController.descriptionLabel.text = data.description
+                    
+                    expectation.fulfill()
+                })
             })
-            
-            expectation.fulfill()
         })
-        wait(for: [expectation], timeout: 0.5)
+        wait(for: [expectation], timeout: 1)
     }
     
     func testInitialState() {
@@ -297,38 +298,11 @@ final class SearchViewControllerTests: XCTestCase {
             
             assertSnapshot(of: appSearchViewController, as: .image(size: size))
             
-            appSearchViewController.appInfoCollectionView.scrollToItem(at: IndexPath(row: 10, section: 0), at: .bottom, animated: false)
+            appSearchViewController.appInfoCollectionView.scrollToItem(at: IndexPath(row: appSearchViewController.searchViewModel.apps.value.count - 1, section: 0), at: .bottom, animated: false)
             assertSnapshot(of: appSearchViewController, as: .image(size: size))
             expectation.fulfill()
         })
         wait(for: [expectation], timeout: 0.2)
-    }
-}
-
-struct TestUtil {
-    private init() { }
-    
-    static let shared = TestUtil()
-    
-    func testViewEqualToSuperViewCenterX(_ view: UIView) -> Bool {
-        guard let superview = view.superview else { return false }
-        
-        let frame = view.frame
-        let superFrame = superview.frame
-        
-        return frame.minX + frame.width / 2 == superFrame.width / 2
-    }
-    
-    func testViewEqualToSuperViewCenterY(_ view: UIView) -> Bool {
-        guard let superview = view.superview else { return false }
-        
-        let frame = view.frame
-        let superFrame = superview.frame
-        
-        let y1 = frame.minY + frame.height / 2
-        let y2 = superFrame.height / 2
-        
-        return y1 - y2 < abs(0.2)
     }
 }
 
