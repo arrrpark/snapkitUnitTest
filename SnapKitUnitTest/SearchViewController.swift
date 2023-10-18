@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import RxSwift
+import RxCocoa
 
 class SearchViewController: BaseViewController {
     
@@ -31,13 +32,13 @@ class SearchViewController: BaseViewController {
         $0.tintColor = Colors.gray.rawValue.hexStringToUIColor
     }
     
-    lazy var deleteIcon = UIImageView().then {
-        $0.image = UIImage(systemName: "xmark.circle.fill")
-        $0.contentMode = .scaleAspectFit
+    lazy var deleteIcon = UIButton().then {
+        $0.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         $0.tintColor = Colors.gray.rawValue.hexStringToUIColor
         
-        $0.isUserInteractionEnabled = true
-        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onTextDeletePressed)))
+        $0.rx.tap.bind { [weak self] in
+            self?.onTextDeletePressed()
+        }.disposed(by: disposeBag)
     }
     
     lazy var searchField = UITextField().then  {
@@ -65,7 +66,6 @@ class SearchViewController: BaseViewController {
         $0.delegate = self
         $0.layer.cornerRadius = 5
         $0.clipsToBounds = true
-        $0.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }
     
     lazy var recentWordsFlowLayout = UICollectionViewFlowLayout().then {
@@ -76,7 +76,7 @@ class SearchViewController: BaseViewController {
     
     lazy var recentWordCollectionView = RecentWordCollectionView(frame: .zero, collectionViewLayout: recentWordsFlowLayout, searchViewModel: searchViewModel).then {
         $0.backgroundColor = .clear
-//        $0.viewDelegate = self
+        $0.viewDelegate = self
     }
     
     lazy var appInfoCollectionViewFlowLayout = UICollectionViewFlowLayout().then {
@@ -92,6 +92,21 @@ class SearchViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        searchField.rx.value.asDriver().drive(onNext: { [weak self] text in
+            guard let self, let text else { return }
+            
+            self.searchViewModel.isSearchFieldCharacterExists.accept(text.count > 0)
+            self.searchViewModel.searchedWords.accept(RecentWordDAO.shared.getWords(text))
+        }).disposed(by: disposeBag)
+        
+        searchField.rx.controlEvent(.editingDidBegin).subscribe(onNext:{[weak self] in
+            self?.searchViewModel.isSearchFieldFocused.accept(true)
+        }).disposed(by: disposeBag)
+        
+        searchField.rx.controlEvent(.editingDidEnd).subscribe(onNext:{[weak self] in
+            self?.searchViewModel.isSearchFieldFocused.accept(false)
+        }).disposed(by: disposeBag)
         
         searchViewModel.apps.subscribe { [weak self] _ in
             self?.appInfoCollectionView.reloadData()
@@ -158,6 +173,8 @@ class SearchViewController: BaseViewController {
             if value.results.count > 0 {
                 RecentWordDAO.shared.saveOrUpdate(name)
             }
+            
+            print("count : \(self.searchViewModel.apps.value.count)")
         }.disposed(by: disposeBag)
         
     }
@@ -176,24 +193,9 @@ class SearchViewController: BaseViewController {
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        searchViewModel.isSearchFieldFocused.accept(true)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        searchViewModel.isSearchFieldFocused.accept(false)
-    }
-    
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        
-        searchViewModel.isSearchFieldCharacterExists.accept(text.count > 0)
-        searchViewModel.searchedWords.accept(RecentWordDAO.shared.getWords(text))
-    }
-    
-    @objc func onTextDeletePressed() {
+    func onTextDeletePressed() {
         searchField.text = ""
-        deleteIcon.isHidden = true
+        searchField.sendActions(for: .editingChanged)
     }
 }
 
@@ -220,5 +222,16 @@ extension SearchViewController: AppInfoCollectionViewDelegate {
     
     func fetchMoreApps() {
         searchApps(searchViewModel.word)
+    }
+}
+
+extension SearchViewController: RecentWordCollectionViewDelegate {
+    func recentWordCollectionView(_ collectionView: RecentWordCollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let word = searchViewModel.searchedWords.value[indexPath.row].word else { return }
+        
+        view.endEditing(true)
+        searchField.text = word
+        RecentWordDAO.shared.saveOrUpdate(word)
+        searchApps(word)
     }
 }

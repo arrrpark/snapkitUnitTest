@@ -10,8 +10,11 @@ import SnapKit
 import Then
 import Kingfisher
 import Cosmos
+import RxSwift
 
 class DetailViewController: BaseViewController {
+    
+    let disposeBag = DisposeBag()
     
     let detailViewModel: DetailViewModel
     
@@ -19,19 +22,19 @@ class DetailViewController: BaseViewController {
         $0.backgroundColor = .white
     }
     
-    lazy var backButtonView = UIView().then {
-        $0.isUserInteractionEnabled = true
-        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onBackButtonPressed)))
-    }
+    lazy var backButtonConfig: UIButton.Configuration = {
+        var config = UIButton.Configuration.plain()
+        config.title = "Search"
+        config.image = UIImage(systemName: "chevron.left")
+        config.imagePadding = 5
+        return config
+    }()
     
-    lazy var backImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "chevron.left")
-        $0.contentMode = .scaleAspectFit
-    }
-    
-    lazy var searchLabel = UILabel().then {
-        $0.text = "Search"
-        $0.textColor = Colors.basicTint.rawValue.hexStringToUIColor
+    lazy var backButton = UIButton(configuration: backButtonConfig).then {
+        $0.setTitleColor(Colors.basicTint.rawValue.hexStringToUIColor, for: .normal)
+        $0.rx.tap.bind { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }.disposed(by: disposeBag)
     }
     
     lazy var containerView = UIScrollView().then {
@@ -54,7 +57,6 @@ class DetailViewController: BaseViewController {
         $0.font = UIFont.boldSystemFont(ofSize: 18)
         $0.text = detailViewModel.appInfo.trackCensoredName
         $0.numberOfLines = 1
-//        $0.accessibilityIdentifier = DVIdentifiers.appTitle.rawValue
     }
     
     lazy var genresLabel = UILabel().then {
@@ -92,7 +94,7 @@ class DetailViewController: BaseViewController {
     lazy var ratingCountLabel = UILabel().then {
         $0.textColor = Colors.gray.rawValue.hexStringToUIColor
         $0.font = UIFont.systemFont(ofSize: 12)
-        $0.text = "\(detailViewModel.appInfo.userRatingCount.ratingString) 개의 평가"
+        $0.text = "\(detailViewModel.appInfo.userRatingCount.ratingString) RATINGS"
     }
     
     lazy var ageGuideLabel = UILabel().then {
@@ -125,15 +127,14 @@ class DetailViewController: BaseViewController {
         $0.lineBreakMode = .byTruncatingTail
     }
     
-    lazy var viewMoreLabel = UILabel().then {
-        $0.text = "more"
-        $0.backgroundColor = .white
-        $0.font = UIFont.systemFont(ofSize: 12)
-        $0.textColor = Colors.basicTint.rawValue.hexStringToUIColor
-        $0.isUserInteractionEnabled = true
-        
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(onViewMorePressed))
-        $0.addGestureRecognizer(gesture)
+    lazy var viewMoreButton = UIButton().then {
+        $0.setTitle("more", for: .normal)
+        $0.backgroundColor = .clear
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        $0.setTitleColor(Colors.basicTint.rawValue.hexStringToUIColor, for: .normal)
+        $0.rx.tap.bind { [weak self] in
+            self?.onViewMorePressed()
+        }.disposed(by: disposeBag)
     }
 
     init(detailViewModel: DetailViewModel) {
@@ -155,9 +156,7 @@ class DetailViewController: BaseViewController {
         view.addSubview(containerView)
         
         view.addSubview(headerView)
-        headerView.addSubview(backButtonView)
-        backButtonView.addSubview(backImageView)
-        backButtonView.addSubview(searchLabel)
+        headerView.addSubview(backButton)
 
         containerView.addSubview(iconImageView)
         containerView.addSubview(appTitle)
@@ -173,7 +172,7 @@ class DetailViewController: BaseViewController {
 
         containerView.addSubview(detailAppImageCollectionView)
         containerView.addSubview(descriptionLabel)
-        containerView.addSubview(viewMoreLabel)
+        containerView.addSubview(viewMoreButton)
     }
 
     override func addConstraints() {
@@ -185,21 +184,10 @@ class DetailViewController: BaseViewController {
             $0.height.equalTo(40)
         }
         
-        backButtonView.snp.makeConstraints {
+        backButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(10)
-            $0.top.centerY.equalToSuperview()
-            $0.trailing.equalTo(searchLabel).offset(10)
-        }
-
-        backImageView.snp.makeConstraints {
-            $0.size.equalTo(20)
-            $0.leading.equalToSuperview()
-            $0.centerY.equalToSuperview()
-        }
-
-        searchLabel.snp.makeConstraints {
-            $0.leading.equalTo(backImageView.snp.trailing).offset(5)
-            $0.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.width.equalTo(100)
         }
         
         containerView.snp.makeConstraints {
@@ -280,19 +268,15 @@ class DetailViewController: BaseViewController {
             $0.bottom.equalToSuperview()
         }
 
-        viewMoreLabel.snp.makeConstraints {
+        viewMoreButton.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(10)
             $0.trailing.equalTo(descriptionLabel)
         }
     }
     
-    @objc func onBackButtonPressed(_ sender: UITapGestureRecognizer) {
-        navigationController?.popViewController(animated: true)
-    }
- 
-    @objc func onViewMorePressed(_ sender: UITapGestureRecognizer) {
+    func onViewMorePressed() {
         descriptionLabel.numberOfLines = 0
-        viewMoreLabel.isHidden = true
+        viewMoreButton.isHidden = true
     }
 }
 

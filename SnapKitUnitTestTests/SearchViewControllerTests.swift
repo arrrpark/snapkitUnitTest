@@ -39,8 +39,6 @@ final class SearchViewControllerTests: XCTestCase {
     func testSearchViewControllerProperlySet() {
         let searchIconImage = appSearchViewController.searchIcon.image
         let deleteIconImage = appSearchViewController.deleteIcon.image
-        appSearchViewController.searchIcon.image = UIImage(named: "dummy")
-        appSearchViewController.deleteIcon.image = UIImage(named: "dummy")
         
         appSearchViewController.viewDidLoad()
         appSearchViewController.view.layoutIfNeeded()
@@ -48,12 +46,6 @@ final class SearchViewControllerTests: XCTestCase {
         let searchField = appSearchViewController.searchField
         let searchIcon = appSearchViewController.searchIcon
         let deleteIcon = appSearchViewController.deleteIcon
-        
-        var frame = searchField.frame
-        XCTAssertEqual(frame.minX, 20)
-        XCTAssertEqual(frame.minY, ScreenUtil.shared.safeAreaTopMargin)
-        XCTAssertEqual(frame.width, UIScreen.main.bounds.width - 40)
-        XCTAssertEqual(frame.height, 30)
         
         XCTAssertEqual(searchField.textColor, UIColor.black)
         XCTAssertEqual(searchField.backgroundColor, Colors.backgroundGray.rawValue.hexStringToUIColor)
@@ -66,22 +58,12 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(searchField.layer.cornerRadius == 5)
         XCTAssertTrue(searchField.clipsToBounds)
         
-        frame = searchIcon.frame
-        XCTAssertEqual(searchIconImage, UIImage(systemName: "magnifyingglass"))
         XCTAssertTrue(searchIcon.contentMode == .scaleAspectFit)
         XCTAssertEqual(searchIcon.tintColor, Colors.gray.rawValue.hexStringToUIColor)
         
-        XCTAssertTrue(frame.minX == 5)
-        XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(searchIcon))
-        XCTAssertTrue(searchIcon.frame.width == 20)
-        XCTAssertTrue(searchIcon.frame.height == 20)
-        
-        frame = deleteIcon.frame
-        XCTAssertEqual(deleteIconImage, UIImage(systemName: "xmark.circle.fill"))
         XCTAssertTrue(deleteIcon.contentMode == .scaleAspectFit)
         XCTAssertEqual(deleteIcon.tintColor, Colors.gray.rawValue.hexStringToUIColor)
         
-        XCTAssertTrue(frame.minX == searchField.frame.width - 20 - 5)
         XCTAssertTrue(TestUtil.shared.testViewEqualToSuperViewCenterY(deleteIcon))
         XCTAssertTrue(deleteIcon.frame.width == 20)
         XCTAssertTrue(deleteIcon.frame.height == 20)

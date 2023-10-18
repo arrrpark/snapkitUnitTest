@@ -10,17 +10,26 @@ import Foundation
 extension Int {
     var ratingString: String {
         get {
-            if self > 9999 {
-                let rating = NSMutableString(string: "\(round((Double(self) / 10000.0) * 10) / 10)")
-                
-                if rating.hasSuffix(".0") {
-                    rating.deleteCharacters(in: NSRange(location: rating.length - 2, length: 2))
+            var count = 0
+            var dividedSelf = self
+            
+            while dividedSelf >= 1000 || count != 2 {
+                if dividedSelf / 1000 == 0 {
+                    break
                 }
-                
-                return "\(rating) 만"
-            } else {
-                return String(self)
+                count += 1
+                dividedSelf /= 1000
             }
+            
+            if count == 1 {
+                return "\(dividedSelf)K"
+            }
+            
+            if count == 2 {
+                return "\(dividedSelf)M"
+            }
+            
+            return String(dividedSelf)
         }
     }
 }
