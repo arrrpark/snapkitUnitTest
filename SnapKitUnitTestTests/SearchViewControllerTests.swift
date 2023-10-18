@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import Combine
+import RxSwift
 import SnapshotTesting
 @testable import SnapKitUnitTest
 
@@ -351,11 +351,12 @@ struct TestUtil {
 }
 
 class SearchTestViewModel: SearchViewModel {
-    override func searchApps(_ name: String) -> Future<SearchResult, NetworkError> {
-        return Future<SearchResult, NetworkError> ({ promise in
+    override func searchApps(_ name: String) -> Single<SearchResult> {
+        return Single.create { observer -> Disposable in
             guard let data = searchMockData.data(using: .utf8),
                   var searchData = try? JSONDecoder().decode(SearchResult.self, from: data) else {
-                return promise(.failure(.badForm))
+                observer(.failure(NetworkError.badForm))
+                return Disposables.create { }
             }
             
             var results = searchData.results
@@ -386,8 +387,10 @@ class SearchTestViewModel: SearchViewModel {
             }
             
             searchData.results = results
-            promise(.success(searchData))
-        })
+            observer(.success(searchData))
+            
+            return Disposables.create {  }
+        }
     }
 }
 

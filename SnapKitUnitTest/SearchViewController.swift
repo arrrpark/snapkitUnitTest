@@ -8,14 +8,13 @@
 import UIKit
 import SnapKit
 import Then
-import Combine
-import CombineCocoa
+import RxSwift
 
 class SearchViewController: BaseViewController {
     
-    var cancelBag = Set<AnyCancellable>()
+    let disposeBag = DisposeBag()
     
-    var searchViewModel: SearchViewModel
+    let searchViewModel: SearchViewModel
     
     init(_ searchViewModel: SearchViewModel) {
         self.searchViewModel = searchViewModel
@@ -94,27 +93,21 @@ class SearchViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchField.textPublisher.sink(receiveValue: { [weak self] text in
-            self?.deleteIcon.isHidden = (text?.count == 0)
-        }).store(in: &cancelBag)
-        
-        searchViewModel.apps.sink(receiveValue: { [weak self] apps in
+        searchViewModel.apps.subscribe { [weak self] _ in
             self?.appInfoCollectionView.reloadData()
-        }).store(in: &cancelBag)
+        }.disposed(by: disposeBag)
         
-        searchViewModel.isTextFieldFocused
-            .combineLatest(searchViewModel.isTextFieldCharacterExists, searchViewModel.apps)
-            .sink(receiveValue: { [weak self] isFocused, isCharacterExists, apps in
-                guard let self else { return }
-                
-                self.deleteIcon.isHidden = !(isFocused && isCharacterExists)
-                self.recentWordCollectionView.isHidden = !(isFocused && isCharacterExists)
-                self.appInfoCollectionView.isHidden = !self.recentWordCollectionView.isHidden
-            }).store(in: &cancelBag)
+        Observable.combineLatest(searchViewModel.isSearchFieldFocused, searchViewModel.isSearchFieldCharacterExists, searchViewModel.apps).subscribe { [weak self] isFocused, isCharacterExists, apps in
+            guard let self else { return }
+            
+            self.deleteIcon.isHidden = !(isFocused && isCharacterExists)
+            self.recentWordCollectionView.isHidden = !(isFocused && isCharacterExists)
+            self.appInfoCollectionView.isHidden = !self.recentWordCollectionView.isHidden
+        }.disposed(by: disposeBag)
         
-        searchViewModel.searchedWords.sink(receiveValue: { [weak self] _ in
+        searchViewModel.searchedWords.subscribe { [weak self] _ in
             self?.recentWordCollectionView.reloadData()
-        }).store(in: &cancelBag)
+        }.disposed(by: disposeBag)
     }
     
     override func addSubviews() {
@@ -147,17 +140,15 @@ class SearchViewController: BaseViewController {
     func searchApps(_ name: String) {
         guard !searchViewModel.isFetching.value else { return }
         
-        searchViewModel.isFetching.value = true
-        searchViewModel.searchApps(name).sink(receiveCompletion: { _ in
-            
-        }, receiveValue: { [weak self] value in
+        searchViewModel.isFetching.accept(true)
+        searchViewModel.searchApps(name).subscribe { [weak self] value in
             guard let self else { return }
             
-            var existingApps = searchViewModel.apps.value
+            var existingApps = self.searchViewModel.apps.value
             existingApps.append(contentsOf: value.results)
             
-            self.searchViewModel.apps.value = existingApps
-            self.searchViewModel.isFetching.value = false
+            self.searchViewModel.apps.accept(existingApps)
+            self.searchViewModel.isFetching.accept(false)
             self.searchViewModel.pageIndex += 1
             
             if value.results.count < 10 {
@@ -167,9 +158,8 @@ class SearchViewController: BaseViewController {
             if value.results.count > 0 {
                 RecentWordDAO.shared.saveOrUpdate(name)
             }
-            
-            print("count: \(self.searchViewModel.apps.value.count)")
-        }).store(in: &cancelBag)
+        }.disposed(by: disposeBag)
+        
     }
     
     func saveImage(_ image: UIImage, name: String) -> URL? {
@@ -187,18 +177,18 @@ class SearchViewController: BaseViewController {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        searchViewModel.isTextFieldFocused.value = true
+        searchViewModel.isSearchFieldFocused.accept(true)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        searchViewModel.isTextFieldFocused.value = false
+        searchViewModel.isSearchFieldFocused.accept(false)
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
         
-        searchViewModel.isTextFieldCharacterExists.value = text.count > 0
-        searchViewModel.searchedWords.value = RecentWordDAO.shared.getWords(text)
+        searchViewModel.isSearchFieldCharacterExists.accept(text.count > 0)
+        searchViewModel.searchedWords.accept(RecentWordDAO.shared.getWords(text))
     }
     
     @objc func onTextDeletePressed() {

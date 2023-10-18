@@ -6,25 +6,24 @@
 //
 
 import XCTest
-import Combine
+import RxSwift
 import SnapshotTesting
 @testable import SnapKitUnitTest
 
 final class DetailViewControllerTests: XCTestCase {
-    var cancelBag: Set<AnyCancellable>!
+    var disposeBag: DisposeBag!
     var appInfo: [AppInfo]!
     var detailViewController: DetailViewController!
     var detailViewModel: DetailViewModel!
     
     override func setUp() {
         super.setUp()
-        cancelBag = Set<AnyCancellable>()
+        disposeBag = DisposeBag()
         
         let testViewModel = SearchTestViewModel()
-        testViewModel.searchApps("").sink(receiveCompletion: { _ in
-        }, receiveValue: { [weak self] result in
+        testViewModel.searchApps("").subscribe { [weak self] result in
             self?.appInfo = result.results
-        }).store(in: &cancelBag)
+        }.disposed(by: disposeBag)
         
         detailViewModel = DetailViewModel(appInfo: appInfo[0])
         detailViewController = DetailViewController(detailViewModel: detailViewModel)
@@ -36,7 +35,7 @@ final class DetailViewControllerTests: XCTestCase {
         appInfo = nil
         detailViewModel = nil
         detailViewController = nil
-        cancelBag = nil
+        disposeBag = nil
     }
     
     func testDetailViewControllerProperlySet() {

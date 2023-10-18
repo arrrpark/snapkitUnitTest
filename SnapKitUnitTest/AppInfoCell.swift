@@ -220,8 +220,13 @@ class AppInfoCell: UICollectionViewCell {
         super.prepareForReuse()
         
         appGuideImageView1.isHidden = false
+        appGuideImageView1.image = nil
+        
         appGuideImageView2.isHidden = false
+        appGuideImageView2.image = nil
+        
         appGuideImageView3.isHidden = false
+        appGuideImageView3.image = nil
     }
 }
 

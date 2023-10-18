@@ -6,19 +6,21 @@
 //
 
 import UIKit
-import Combine
+import RxSwift
+import RxCocoa
 
 class SearchViewModel {
-    var apps = CurrentValueSubject<[AppInfo], Never>([])
-    var searchedWords = CurrentValueSubject<[Word], Never>([])
-    var isFetching = CurrentValueSubject<Bool, Never>(false)
-    var isTextFieldFocused = CurrentValueSubject<Bool, Never>(false)
-    var isTextFieldCharacterExists = CurrentValueSubject<Bool, Never>(false)
+    var apps = BehaviorRelay<[AppInfo]>(value: [])
+    var searchedWords = BehaviorRelay<[Word]>(value: [])
+    var isFetching = BehaviorRelay<Bool>(value: false)
+    var isSearchFieldFocused = BehaviorRelay<Bool>(value: false)
+    var isSearchFieldCharacterExists = BehaviorRelay<Bool>(value: false)
+    
     var isEndReached = false
     var pageIndex = 0
     var word = ""
     
-    func searchApps(_ name: String) -> Future<SearchResult, NetworkError> {
+    func searchApps(_ name: String) -> Single<SearchResult> {
         var parameters: [String: Any] = ["country": "us",
                                          "term": name,
                                          "limit": 10,
@@ -32,7 +34,7 @@ class SearchViewModel {
     }
     
     func initialize() {
-        apps.value = []
+        apps.accept([])
         word = ""
         isEndReached = false
         pageIndex = 0

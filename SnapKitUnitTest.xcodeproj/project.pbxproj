@@ -15,7 +15,6 @@
 		0A6C40402AD3ADDF001A3DD2 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C403F2AD3ADDF001A3DD2 /* Colors.swift */; };
 		0A6C40422AD3AF8E001A3DD2 /* AlamofireWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C40412AD3AF8E001A3DD2 /* AlamofireWrapper.swift */; };
 		0A6C40442AD3B002001A3DD2 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C40432AD3B002001A3DD2 /* SearchViewModel.swift */; };
-		0A6C40492AD3B7E7001A3DD2 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 0A6C40482AD3B7E7001A3DD2 /* CombineCocoa */; };
 		0A6C404D2AD3C39A001A3DD2 /* AppInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C404C2AD3C39A001A3DD2 /* AppInfoCell.swift */; };
 		0A6C404F2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6C404E2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift */; };
 		0A6C40522AD3C3FF001A3DD2 /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 0A6C40512AD3C3FF001A3DD2 /* Cosmos */; };
@@ -26,6 +25,8 @@
 		0A7D14372ADFAA2A0073F15B /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D14362ADFAA2A0073F15B /* Date+Extension.swift */; };
 		0A7D143A2ADFAAA20073F15B /* RecentWordCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D14392ADFAAA20073F15B /* RecentWordCollectionView.swift */; };
 		0A7D143C2ADFAAD00073F15B /* RecentWordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7D143B2ADFAAD00073F15B /* RecentWordCell.swift */; };
+		0A7D143F2ADFC3660073F15B /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7D143E2ADFC3660073F15B /* RxCocoa */; };
+		0A7D14412ADFC3660073F15B /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0A7D14402ADFC3660073F15B /* RxSwift */; };
 		0A88FC742AD2ECFD00469934 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC732AD2ECFD00469934 /* AppDelegate.swift */; };
 		0A88FC762AD2ECFD00469934 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC752AD2ECFD00469934 /* SceneDelegate.swift */; };
 		0A88FC782AD2ECFD00469934 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FC772AD2ECFD00469934 /* SearchViewController.swift */; };
@@ -131,12 +132,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A7D143F2ADFC3660073F15B /* RxCocoa in Frameworks */,
 				0A6C40522AD3C3FF001A3DD2 /* Cosmos in Frameworks */,
 				0A88FCAA2AD2EE6E00469934 /* Kingfisher in Frameworks */,
 				0A88FCB02AD2EEA700469934 /* Alamofire in Frameworks */,
 				0A88FCAD2AD2EE8900469934 /* Then in Frameworks */,
-				0A6C40492AD3B7E7001A3DD2 /* CombineCocoa in Frameworks */,
 				0A88FCA52AD2EDDA00469934 /* SnapKit in Frameworks */,
+				0A7D14412ADFC3660073F15B /* RxSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,8 +298,9 @@
 				0A88FCA92AD2EE6E00469934 /* Kingfisher */,
 				0A88FCAC2AD2EE8900469934 /* Then */,
 				0A88FCAF2AD2EEA700469934 /* Alamofire */,
-				0A6C40482AD3B7E7001A3DD2 /* CombineCocoa */,
 				0A6C40512AD3C3FF001A3DD2 /* Cosmos */,
+				0A7D143E2ADFC3660073F15B /* RxCocoa */,
+				0A7D14402ADFC3660073F15B /* RxSwift */,
 			);
 			productName = SnapKitUnitTest;
 			productReference = 0A88FC702AD2ECFD00469934 /* SnapKitUnitTest.app */;
@@ -379,9 +382,9 @@
 				0A88FCA82AD2EE6E00469934 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				0A88FCAB2AD2EE8900469934 /* XCRemoteSwiftPackageReference "Then" */,
 				0A88FCAE2AD2EEA600469934 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				0A6C40472AD3B7E7001A3DD2 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				0A6C40502AD3C3FF001A3DD2 /* XCRemoteSwiftPackageReference "Cosmos" */,
 				0A7821BF2ADE84A100DC9395 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				0A7D143D2ADFC3660073F15B /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 0A88FC712AD2ECFD00469934 /* Products */;
 			projectDirPath = "";
@@ -802,14 +805,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0A6C40472AD3B7E7001A3DD2 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.1;
-			};
-		};
 		0A6C40502AD3C3FF001A3DD2 /* XCRemoteSwiftPackageReference "Cosmos" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/evgenyneu/Cosmos";
@@ -824,6 +819,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.14.2;
+			};
+		};
+		0A7D143D2ADFC3660073F15B /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.0;
 			};
 		};
 		0A88FCA32AD2EDDA00469934 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
@@ -861,11 +864,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0A6C40482AD3B7E7001A3DD2 /* CombineCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0A6C40472AD3B7E7001A3DD2 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
-			productName = CombineCocoa;
-		};
 		0A6C40512AD3C3FF001A3DD2 /* Cosmos */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0A6C40502AD3C3FF001A3DD2 /* XCRemoteSwiftPackageReference "Cosmos" */;
@@ -875,6 +873,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0A7821BF2ADE84A100DC9395 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
+		};
+		0A7D143E2ADFC3660073F15B /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A7D143D2ADFC3660073F15B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		0A7D14402ADFC3660073F15B /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A7D143D2ADFC3660073F15B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 		0A88FCA42AD2EDDA00469934 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

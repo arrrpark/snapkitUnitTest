@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import Combine
+import RxSwift
 
 enum NetworkError: Error {
     case badForm
@@ -30,18 +31,20 @@ struct AlamofireWrapper {
         ]
     }
     
-    func byGet<T: Codable>(url: String, parameters: [String: Any]? = nil) -> Future<T, NetworkError> {
-        return Future<T, NetworkError>({ promise in
-            AF.request("\(baseURL)\(url)", parameters: parameters, headers: configureHeaders())
+    func byGet<T: Codable>(url: String, parameters: [String: Any]? = nil) -> Single<T> {
+        return Single.create { observer -> Disposable in
+            let task = AF.request("\(baseURL)\(url)", parameters: parameters, headers: configureHeaders())
                 .validate(statusCode: 200..<300)
                 .response(completionHandler: { response in
                     guard let data = response.data,
                           let data = try? jsonDecoder.decode(T.self, from: data) else {
-                        promise(.failure(.badForm))
+                        observer(.failure(NetworkError.badForm))
                         return
                     }
-                    promise(.success(data))
+                    observer(.success(data))
                 })
-        })
+            
+            return Disposables.create { task.cancel() }
+        }
     }
 }
