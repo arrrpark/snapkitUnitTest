@@ -47,6 +47,11 @@
 		0A88FCBB2AD2F30100469934 /* ScreenUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCBA2AD2F30100469934 /* ScreenUtil.swift */; };
 		0A88FCBD2AD2F64900469934 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCBC2AD2F64900469934 /* String+Extension.swift */; };
 		0A88FCBF2AD2F73600469934 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A88FCBE2AD2F73600469934 /* UITextField+Extension.swift */; };
+		0ABCC1812AE6D33E00215F67 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 0ABCC1802AE6D33E00215F67 /* RxBlocking */; };
+		0ABCC1832AE6D33E00215F67 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 0ABCC1822AE6D33E00215F67 /* RxCocoa */; };
+		0ABCC1852AE6D33E00215F67 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 0ABCC1842AE6D33E00215F67 /* RxTest */; };
+		0ABCC1882AE6D39D00215F67 /* SearchViewModelForTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCC1872AE6D39D00215F67 /* SearchViewModelForTest.swift */; };
+		0ABCC18E2AE6D70A00215F67 /* RecentWordDAOForTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCC18D2AE6D70A00215F67 /* RecentWordDAOForTest.swift */; };
 		0ACDCEA62AD45384005D5919 /* messageIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0ACDCEA32AD45384005D5919 /* messageIcon.jpg */; };
 		0ACDCEA72AD45384005D5919 /* viberIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0ACDCEA42AD45384005D5919 /* viberIcon.jpg */; };
 		0ACDCEA82AD45384005D5919 /* catIcon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0ACDCEA52AD45384005D5919 /* catIcon.jpg */; };
@@ -116,6 +121,8 @@
 		0A88FCBA2AD2F30100469934 /* ScreenUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenUtil.swift; sourceTree = "<group>"; };
 		0A88FCBC2AD2F64900469934 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		0A88FCBE2AD2F73600469934 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		0ABCC1872AE6D39D00215F67 /* SearchViewModelForTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelForTest.swift; sourceTree = "<group>"; };
+		0ABCC18D2AE6D70A00215F67 /* RecentWordDAOForTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentWordDAOForTest.swift; sourceTree = "<group>"; };
 		0ACDCEA32AD45384005D5919 /* messageIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = messageIcon.jpg; sourceTree = "<group>"; };
 		0ACDCEA42AD45384005D5919 /* viberIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = viberIcon.jpg; sourceTree = "<group>"; };
 		0ACDCEA52AD45384005D5919 /* catIcon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = catIcon.jpg; sourceTree = "<group>"; };
@@ -158,6 +165,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ABCC1832AE6D33E00215F67 /* RxCocoa in Frameworks */,
+				0ABCC1852AE6D33E00215F67 /* RxTest in Frameworks */,
+				0ABCC1812AE6D33E00215F67 /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +190,7 @@
 				0A88FC892AD2ECFF00469934 /* SnapKitUnitTestTests */,
 				0A88FC932AD2ECFF00469934 /* SnapKitUnitTestUITests */,
 				0A88FC712AD2ECFD00469934 /* Products */,
+				0ABCC16D2AE6D1CA00215F67 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -227,6 +238,7 @@
 		0A88FC892AD2ECFF00469934 /* SnapKitUnitTestTests */ = {
 			isa = PBXGroup;
 			children = (
+				0ABCC1862AE6D38500215F67 /* Mocks */,
 				0A3F65282AE65E2D00F813BE /* RecentWordDAOUnitTests.swift */,
 				0A88FC8A2AD2ECFF00469934 /* SearchViewControllerTests.swift */,
 				0A40187E2AD53D5D00268C8E /* DetailViewControllerTests.swift */,
@@ -262,6 +274,22 @@
 				0A7D14362ADFAA2A0073F15B /* Date+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		0ABCC16D2AE6D1CA00215F67 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0ABCC1862AE6D38500215F67 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				0ABCC1872AE6D39D00215F67 /* SearchViewModelForTest.swift */,
+				0ABCC18D2AE6D70A00215F67 /* RecentWordDAOForTest.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		0AD06FDC2AD40FDE0009A1CB /* ImagesForTest */ = {
@@ -347,6 +375,11 @@
 				0A88FC922AD2ECFF00469934 /* PBXTargetDependency */,
 			);
 			name = SnapKitUnitTestUITests;
+			packageProductDependencies = (
+				0ABCC1802AE6D33E00215F67 /* RxBlocking */,
+				0ABCC1822AE6D33E00215F67 /* RxCocoa */,
+				0ABCC1842AE6D33E00215F67 /* RxTest */,
+			);
 			productName = SnapKitUnitTestUITests;
 			productReference = 0A88FC902AD2ECFF00469934 /* SnapKitUnitTestUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -480,7 +513,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A3F65292AE65E2D00F813BE /* RecentWordDAOUnitTests.swift in Sources */,
+				0ABCC1882AE6D39D00215F67 /* SearchViewModelForTest.swift in Sources */,
 				0A2807502AE0214F00506B08 /* ExtensionTests.swift in Sources */,
+				0ABCC18E2AE6D70A00215F67 /* RecentWordDAOForTest.swift in Sources */,
 				0A88FC8B2AD2ECFF00469934 /* SearchViewControllerTests.swift in Sources */,
 				0A40187F2AD53D5D00268C8E /* DetailViewControllerTests.swift in Sources */,
 			);
@@ -911,6 +946,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0A88FCAE2AD2EEA600469934 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		0ABCC1802AE6D33E00215F67 /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A7D143D2ADFC3660073F15B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		0ABCC1822AE6D33E00215F67 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A7D143D2ADFC3660073F15B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		0ABCC1842AE6D33E00215F67 /* RxTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0A7D143D2ADFC3660073F15B /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxTest;
 		};
 /* End XCSwiftPackageProductDependency section */
 

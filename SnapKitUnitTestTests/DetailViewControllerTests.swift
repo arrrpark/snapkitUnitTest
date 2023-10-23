@@ -20,7 +20,7 @@ final class DetailViewControllerTests: XCTestCase {
         super.setUp()
         disposeBag = DisposeBag()
         
-        let testViewModel = SearchTestViewModel()
+        let testViewModel = SearchViewModelForTest()
         testViewModel.searchApps("").subscribe { [weak self] result in
             self?.appInfo = result.results
         }.disposed(by: disposeBag)

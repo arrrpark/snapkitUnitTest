@@ -120,7 +120,7 @@ class SearchViewController: BaseViewController {
             self.appInfoCollectionView.isHidden = !self.recentWordCollectionView.isHidden
         }.disposed(by: disposeBag)
         
-        searchViewModel.searchedWords.subscribe { [weak self] _ in
+        searchViewModel.searchedWords.subscribe { [weak self] words in
             self?.recentWordCollectionView.reloadData()
         }.disposed(by: disposeBag)
     }
