@@ -97,7 +97,7 @@ class SearchViewController: BaseViewController {
             guard let self, let text else { return }
             
             self.searchViewModel.isSearchFieldCharacterExists.accept(text.count > 0)
-            self.searchViewModel.searchedWords.accept(RecentWordDAO.shared.getWords(text))
+            self.searchViewModel.searchedWords.accept(RecentWordDAO.shared.getFilteredWords(text))
         }).disposed(by: disposeBag)
         
         searchField.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
@@ -171,7 +171,7 @@ class SearchViewController: BaseViewController {
             }
             
             if value.results.count > 0 {
-                RecentWordDAO.shared.saveOrUpdate(name)
+                RecentWordDAO.shared.saveOrUpdateWord(name)
             }
             
             print("count : \(self.searchViewModel.apps.value.count)")
@@ -231,7 +231,7 @@ extension SearchViewController: RecentWordCollectionViewDelegate {
         
         view.endEditing(true)
         searchField.text = word
-        RecentWordDAO.shared.saveOrUpdate(word)
+        RecentWordDAO.shared.saveOrUpdateWord(word)
         searchApps(word)
     }
 }

@@ -2,26 +2,30 @@
 import UIKit
 import CoreData
 
-struct RecentWordDAO {
-    private init() { }
+class RecentWordDAO {
+    internal init() { }
     
     static let shared = RecentWordDAO()
     
-    func saveOrUpdate(_ searchedWord: String) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        guard let wordEntity = NSEntityDescription.entity(forEntityName: "Word", in: managedContext) else {
+    var viewContext: NSManagedObjectContext? {
+        get {
+            return (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+        }
+    }
+    
+    func saveOrUpdateWord(_ searchedWord: String) {
+        guard let managedContext = viewContext,
+              let wordEntity = NSEntityDescription.entity(forEntityName: "Word", in: managedContext) else {
             return
         }
         
-        let fetchrequest: NSFetchRequest<Word> = Word.fetchRequest()
-        fetchrequest.predicate = NSPredicate(format: "word == %@", searchedWord)
+        // save words uniquely
+        let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "word == %@", searchedWord)
         
         do {
-            if let words = (try managedContext.fetch(fetchrequest)).first {
-                words.setValue(Date().millisecondsSince1970, forKey: "timestamp")
+            if let word = (try managedContext.fetch(fetchRequest)).first {
+                word.setValue(Date().millisecondsSince1970, forKey: "timestamp")
                 do {
                     try managedContext.save()
                     return
@@ -35,6 +39,29 @@ struct RecentWordDAO {
             return
         }
         
+        // save 100 words at most
+        fetchRequest.predicate = nil
+        let timemillsSort = NSSortDescriptor(key: "timestamp", ascending: true)
+        fetchRequest.sortDescriptors = [timemillsSort]
+        
+        do {
+            let words = try managedContext.fetch(fetchRequest)
+            if words.count >= 100,
+               let word = words.first {
+                word.setValue(searchedWord, forKey: "word")
+                word.setValue(Date().millisecondsSince1970, forKey: "timestamp")
+                do {
+                    try managedContext.save()
+                    return
+                } catch let error as NSError {
+                    print("Save error : \(error), \(error.userInfo)")
+                    return
+                }
+            }
+        } catch let error as NSError {
+            print("Retrieve error : \(error), \(error.userInfo)")
+            return
+        }
         
         let word = NSManagedObject(entity: wordEntity, insertInto: managedContext)
         word.setValue(searchedWord, forKey: "word")
@@ -47,10 +74,8 @@ struct RecentWordDAO {
         }
     }
     
-    func getWords(_ word: String? = nil, limit: Int = 10) -> [Word] {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
+    func getFilteredWords(_ word: String? = nil, limit: Int = 10) -> [Word] {
+        guard let managedContext = viewContext else { return [] }
         
         let fetchRequest: NSFetchRequest<Word> = Word.fetchRequest()
         
