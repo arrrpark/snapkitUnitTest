@@ -13,6 +13,7 @@ import SnapshotTesting
 final class SearchViewControllerTests: XCTestCase {
     var navigationController: NavigationController!
     var appSearchViewController: SearchViewController!
+    let screenSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     
     override func setUp() {
         super.setUp()
@@ -130,8 +131,7 @@ final class SearchViewControllerTests: XCTestCase {
         cell = recentWordCollectionView.dataSource?.collectionView(recentWordCollectionView, cellForItemAt: IndexPath(row: 1, section: 0)) as! RecentWordCell
         XCTAssertTrue(cell.wordLabel.text == "Micro")
         
-        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        assertSnapshot(of: appSearchViewController, as: .image(size: size))
+        assertSnapshot(of: appSearchViewController, as: .image(size: screenSize))
         
         searchField.text = ""
         searchField.sendActions(for: .editingDidEnd)
@@ -148,8 +148,8 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertNotNil(appInfoCollectionView.dataSource)
         
         appSearchViewController.searchApps("message")
-        XCTAssertEqual(appSearchViewController.searchViewModel.apps.value.count, 15)
-        XCTAssertEqual(appInfoCollectionView.numberOfItems(inSection: 0), 15)
+        XCTAssertEqual(appSearchViewController.searchViewModel.apps.value.count, 10)
+        XCTAssertEqual(appInfoCollectionView.numberOfItems(inSection: 0), 10)
         
         XCTAssertFalse(appInfoCollectionView.isHidden)
         XCTAssertTrue(appSearchViewController.recentWordCollectionView.isHidden)
@@ -284,6 +284,34 @@ final class SearchViewControllerTests: XCTestCase {
         }
     }
     
+    func testAppInfoCollectionViewPaging() {
+        appSearchViewController.searchApps("Name")
+        XCTAssertTrue(appSearchViewController.searchViewModel.pageIndex == 1)
+        XCTAssertTrue(appSearchViewController.searchViewModel.apps.value.count == 10)
+        XCTAssertFalse(appSearchViewController.searchViewModel.isEndReached)
+        
+        let appInfoCollectionView = appSearchViewController.appInfoCollectionView
+        var cell = appInfoCollectionView.collectionView(appInfoCollectionView, cellForItemAt: IndexPath(row: appSearchViewController.searchViewModel.apps.value.count - 1, section: 0))
+        
+        appInfoCollectionView.collectionView(appInfoCollectionView, willDisplay: cell, forItemAt: IndexPath(row: appSearchViewController.searchViewModel.apps.value.count - 1, section: 0))
+        XCTAssertTrue(appSearchViewController.searchViewModel.pageIndex == 2)
+        XCTAssertTrue(appSearchViewController.searchViewModel.apps.value.count == 15)
+        XCTAssertTrue(appSearchViewController.searchViewModel.isEndReached)
+        
+        cell = appInfoCollectionView.collectionView(appInfoCollectionView, cellForItemAt: IndexPath(row: appSearchViewController.searchViewModel.apps.value.count - 1, section: 0))
+        
+        appInfoCollectionView.collectionView(appInfoCollectionView, willDisplay: cell, forItemAt: IndexPath(row: appSearchViewController.searchViewModel.apps.value.count - 1, section: 0))
+        XCTAssertTrue(appSearchViewController.searchViewModel.pageIndex == 2)
+        XCTAssertTrue(appSearchViewController.searchViewModel.apps.value.count == 15)
+        XCTAssertTrue(appSearchViewController.searchViewModel.isEndReached)
+        
+        appSearchViewController.searchField.text = "iphone"
+        XCTAssertTrue(appSearchViewController.textFieldShouldReturn(appSearchViewController.searchField))
+        XCTAssertTrue(appSearchViewController.searchViewModel.pageIndex == 1)
+        XCTAssertTrue(appSearchViewController.searchViewModel.apps.value.count == 10)
+        XCTAssertFalse(appSearchViewController.searchViewModel.isEndReached)
+    }
+    
     func testNaivagetToDetailViewController() {
         let navigationController = appSearchViewController.navigationController
         XCTAssertNotNil(navigationController)
@@ -339,27 +367,16 @@ final class SearchViewControllerTests: XCTestCase {
     }
     
     func testInitialState() {
-        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         appSearchViewController.viewDidLoad()
         appSearchViewController.view.layoutIfNeeded()
         
-        assertSnapshot(of: appSearchViewController, as: .image(size: size))
+        assertSnapshot(of: appSearchViewController, as: .image(size: screenSize))
     }
     
     func testSnapShotCollectionView() {
-        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        
         appSearchViewController.searchApps("ios")
-        let expectation = expectation(description: "appInfo collectionView snapshot")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
-            guard let self else { return }
-            
-            assertSnapshot(of: appSearchViewController, as: .image(size: size))
-            
-            appSearchViewController.appInfoCollectionView.scrollToItem(at: IndexPath(row: appSearchViewController.searchViewModel.apps.value.count - 1, section: 0), at: .bottom, animated: false)
-            assertSnapshot(of: appSearchViewController, as: .image(size: size))
-            expectation.fulfill()
-        })
-        wait(for: [expectation], timeout: 0.2)
+        assertSnapshot(of: appSearchViewController, as: .image(size: screenSize))
+        appSearchViewController.appInfoCollectionView.scrollToItem(at: IndexPath(row: appSearchViewController.searchViewModel.apps.value.count - 1, section: 0), at: .bottom, animated: false)
+        assertSnapshot(of: appSearchViewController, as: .image(size: screenSize))
     }
 }

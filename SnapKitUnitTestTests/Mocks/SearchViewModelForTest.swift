@@ -11,7 +11,7 @@ import RxSwift
 
 class SearchViewModelForTest: SearchViewModel {
     override func searchApps(_ name: String) -> Single<SearchResult> {
-        return Single.create { observer -> Disposable in
+        return Single.create { [weak self] observer -> Disposable in
             guard let data = searchMockData.data(using: .utf8),
                   var searchData = try? JSONDecoder().decode(SearchResult.self, from: data) else {
                 observer(.failure(NetworkError.badForm))
@@ -45,7 +45,12 @@ class SearchViewModelForTest: SearchViewModel {
                 }
             }
             
-            searchData.results = results
+            if self!.pageIndex == 0 {
+                searchData.results = Array<AppInfo>(results.prefix(10))
+            } else {
+                searchData.results = Array<AppInfo>(results.suffix(from: 10))
+            }
+            
             observer(.success(searchData))
             
             return Disposables.create {  }
