@@ -30,4 +30,4 @@ App's requirements are as follows.
 
 
 For most test part, this project uses XCUnitTest, including UI-related features.
-Only tests that can't be done by XCUnitTest are tested through XCUITest. (For example, collectionView's paging logic)
+Only some parts that can't be tested through XCUnitTest are tested through XCUITest. (For example, collectionView's paging logic)
