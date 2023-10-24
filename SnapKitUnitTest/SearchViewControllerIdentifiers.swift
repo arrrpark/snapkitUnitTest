@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum SVIdentifiders: String {
+enum SearchViewControllerIdentifiers: String {
     case searchField
-    case deleteIcon
+    case appInfoCollectionView
+    case recentWordCollectionView
 }

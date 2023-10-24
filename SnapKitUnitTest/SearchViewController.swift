@@ -35,7 +35,6 @@ class SearchViewController: BaseViewController {
     lazy var deleteIcon = UIButton().then {
         $0.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         $0.tintColor = Colors.gray.rawValue.hexStringToUIColor
-        $0.accessibilityIdentifier = SVIdentifiders.deleteIcon.rawValue
         
         $0.rx.tap.bind { [weak self] in
             self?.onTextDeletePressed()
@@ -67,7 +66,7 @@ class SearchViewController: BaseViewController {
         $0.delegate = self
         $0.layer.cornerRadius = 5
         $0.clipsToBounds = true
-        $0.accessibilityIdentifier = SVIdentifiders.searchField.rawValue
+        $0.accessibilityIdentifier = SearchViewControllerIdentifiers.searchField.rawValue
     }
     
     lazy var recentWordsFlowLayout = UICollectionViewFlowLayout().then {
@@ -79,6 +78,7 @@ class SearchViewController: BaseViewController {
     lazy var recentWordCollectionView = RecentWordCollectionView(frame: .zero, collectionViewLayout: recentWordsFlowLayout, searchViewModel: searchViewModel).then {
         $0.backgroundColor = .clear
         $0.viewDelegate = self
+        $0.accessibilityIdentifier = SearchViewControllerIdentifiers.recentWordCollectionView.rawValue
     }
     
     lazy var appInfoCollectionViewFlowLayout = UICollectionViewFlowLayout().then {
@@ -90,6 +90,7 @@ class SearchViewController: BaseViewController {
     lazy var appInfoCollectionView = AppInfoCollectionView(frame: .zero, collectionViewLayout: appInfoCollectionViewFlowLayout, searchAppProtocol: searchViewModel).then {
         $0.backgroundColor = .clear
         $0.viewDelegate = self
+        $0.accessibilityIdentifier = SearchViewControllerIdentifiers.appInfoCollectionView.rawValue
     }
     
     override func viewDidLoad() {

@@ -19,7 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: scene.coordinateSpace.bounds)
         window?.windowScene = scene
         
-        let viewController = NavigationController(rootViewController: SearchViewController(SearchViewModel()))
+        if ProcessInfo.processInfo.environment["ENV"] == "TEST" {
+            RecentWordDAOForTest.sharedForTest.deleteWords()
+            RecentWordDAOForTest.sharedForTest.insert98Words()
+        }
+        
+        let searchViewModel = ProcessInfo.processInfo.environment["ENV"] == "TEST" ? SearchViewModelForTest() : SearchViewModel()
+        let viewController = NavigationController(rootViewController: SearchViewController(searchViewModel))
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
     }
