@@ -19,6 +19,9 @@ final class SearchViewControllerTests: XCTestCase {
         
         appSearchViewController = SearchViewController(SearchViewModelForTest())
         navigationController = NavigationController(rootViewController: appSearchViewController)
+        
+        appSearchViewController.viewDidLoad()
+        appSearchViewController.view.layoutIfNeeded()
     }
     
     override func tearDown() {
@@ -78,10 +81,31 @@ final class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(appInfoCollectionView.frame.height == UIScreen.main.bounds.height - 30 - 10 - ScreenUtil.shared.safeAreaTopMargin - ScreenUtil.shared.safeAreaBottomMargin)
     }
     
-    func testAppInfoCollectionViewProperlySet() {
-        appSearchViewController.viewDidLoad()
-        appSearchViewController.view.layoutIfNeeded()
+    func testDeleteIconHiddenWhenTypeText() {
+        let deleteIcon = appSearchViewController.deleteIcon
+        XCTAssertTrue(deleteIcon.isHidden)
         
+        
+        let textField = appSearchViewController.searchField
+        appSearchViewController.searchViewModel.isSearchFieldFocused.accept(true)
+        textField.text = "Hello"
+        textField.sendActions(for: .editingChanged)
+        
+        let expectation = expectation(description: "delete Icon hidden test")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            XCTAssertFalse(deleteIcon.isHidden)
+            deleteIcon.sendActions(for: .touchUpInside)
+            XCTAssertTrue(textField.text == "")
+            XCTAssertTrue(deleteIcon.isHidden)
+            expectation.fulfill()
+        })
+        
+        wait(for: [expectation], timeout: 1)
+    }
+    
+    
+    func testAppInfoCollectionViewProperlySet() {
         let appInfoCollectionView = appSearchViewController.appInfoCollectionView
         
         XCTAssertNotNil(appInfoCollectionView.delegate)
@@ -222,9 +246,6 @@ final class SearchViewControllerTests: XCTestCase {
     }
     
     func testNaivagetToDetailViewController() {
-        appSearchViewController.viewDidLoad()
-        appSearchViewController.view.layoutIfNeeded()
-        
         let navigationController = appSearchViewController.navigationController
         XCTAssertNotNil(navigationController)
         XCTAssertTrue(navigationController?.viewControllers.count == 1)
@@ -288,8 +309,6 @@ final class SearchViewControllerTests: XCTestCase {
     
     func testSnapShotCollectionView() {
         let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        appSearchViewController.viewDidLoad()
-        appSearchViewController.view.layoutIfNeeded()
         
         appSearchViewController.searchApps("ios")
         let expectation = expectation(description: "appInfo collectionView snapshot")

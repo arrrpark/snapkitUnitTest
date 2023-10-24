@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A2101392AE747A600F62B52 /* RecentWordDAOForTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCC18D2AE6D70A00215F67 /* RecentWordDAOForTest.swift */; };
+		0A21013A2AE747BA00F62B52 /* SearchViewModelForTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABCC1872AE6D39D00215F67 /* SearchViewModelForTest.swift */; };
+		0A21013C2AE749BF00F62B52 /* SVIdentifiders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A21013B2AE749BF00F62B52 /* SVIdentifiders.swift */; };
+		0A21013D2AE74A4400F62B52 /* SVIdentifiders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A21013B2AE749BF00F62B52 /* SVIdentifiders.swift */; };
 		0A2807502AE0214F00506B08 /* ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A28074F2AE0214F00506B08 /* ExtensionTests.swift */; };
 		0A3F65292AE65E2D00F813BE /* RecentWordDAOUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F65282AE65E2D00F813BE /* RecentWordDAOUnitTests.swift */; };
 		0A4018772AD5311800268C8E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4018762AD5311800268C8E /* DetailViewController.swift */; };
@@ -85,6 +89,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A21013B2AE749BF00F62B52 /* SVIdentifiders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVIdentifiders.swift; sourceTree = "<group>"; };
 		0A28074F2AE0214F00506B08 /* ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTests.swift; sourceTree = "<group>"; };
 		0A3F65282AE65E2D00F813BE /* RecentWordDAOUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentWordDAOUnitTests.swift; sourceTree = "<group>"; };
 		0A4018762AD5311800268C8E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +225,7 @@
 				0A6C404C2AD3C39A001A3DD2 /* AppInfoCell.swift */,
 				0A6C404E2AD3C3A4001A3DD2 /* AppInfoCollectionView.swift */,
 				0A88FC772AD2ECFD00469934 /* SearchViewController.swift */,
+				0A21013B2AE749BF00F62B52 /* SVIdentifiders.swift */,
 				0A6C40432AD3B002001A3DD2 /* SearchViewModel.swift */,
 				0A40187A2AD5314700268C8E /* DetailAppImageCollectionView.swift */,
 				0A40187C2AD5319500268C8E /* DetailAppImageCell.swift */,
@@ -479,7 +485,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A21013C2AE749BF00F62B52 /* SVIdentifiders.swift in Sources */,
 				0A88FCBB2AD2F30100469934 /* ScreenUtil.swift in Sources */,
+				0A2101392AE747A600F62B52 /* RecentWordDAOForTest.swift in Sources */,
 				0A6C40422AD3AF8E001A3DD2 /* AlamofireWrapper.swift in Sources */,
 				0A6C40402AD3ADDF001A3DD2 /* Colors.swift in Sources */,
 				0A6C40542AD3C66D001A3DD2 /* Int+Extension.swift in Sources */,
@@ -490,6 +498,7 @@
 				0A88FCA72AD2EDF900469934 /* BaseViewController.swift in Sources */,
 				0A7D14352ADFA9890073F15B /* RecentWordDAO.swift in Sources */,
 				0A40187B2AD5314700268C8E /* DetailAppImageCollectionView.swift in Sources */,
+				0A21013A2AE747BA00F62B52 /* SearchViewModelForTest.swift in Sources */,
 				0AF0563F2ADEC0970007F47D /* UIImageView+Extension.swift in Sources */,
 				0A7D143C2ADFAAD00073F15B /* RecentWordCell.swift in Sources */,
 				0A88FCBF2AD2F73600469934 /* UITextField+Extension.swift in Sources */,
@@ -525,6 +534,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A21013D2AE74A4400F62B52 /* SVIdentifiders.swift in Sources */,
 				0A88FC952AD2ECFF00469934 /* SnapKitUnitTestUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
