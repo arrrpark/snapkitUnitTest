@@ -23,9 +23,8 @@ App's requirements are as follows.
 - App shows the results. With one search, app can get 10 available apps at most.
 - When user hits the bottom of the screen on searching screen, the app tries to search more with the typed text, if available.
 - When user clicks the app on the list, detail screen would be shown.
-
-
-![AppStorePreView](https://github.com/arrrpark/snapkitUnitTest/assets/69378425/1afc527a-5780-4998-9321-e2d33e0e4c49)
+  
+![AppStorePreview](https://github.com/arrrpark/snapkitUnitTest/assets/69378425/bf918147-b701-4776-a5f4-dd2f819fa899)
 
 For most test part, this project uses XCUnitTest, including UI-related features.
 Only tests that can't be done by XCUnitTest are tested through XCUITest. (For example, collectionView's paging logic)
