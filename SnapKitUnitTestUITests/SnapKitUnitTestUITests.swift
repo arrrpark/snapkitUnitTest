@@ -25,10 +25,6 @@ final class SnapKitUnitTestUITests: XCTestCase {
     func testDeleteIconAppearsWhenTextExists() {
         let deleteIcon = app.buttons[SVIdentifiders.deleteIcon.rawValue]
         
-        print(deleteIcon.exists)
-        print(deleteIcon.isHittable)
-        print(deleteIcon.frame.size.width)
-        print(deleteIcon.frame.size.height)
         deleteIcon.tap()
         
 //        let textField = app.textFields[SVIdentifiders.searchField.rawValue]
@@ -37,5 +33,6 @@ final class SnapKitUnitTestUITests: XCTestCase {
         
         //        app.textFields[SVIdentifiders.searchField.rawValue].typeText("Hello")
 //        app.textFields[SVIdentifiders.searchField.rawValue].typeText("Hello")
+        
     }
 }

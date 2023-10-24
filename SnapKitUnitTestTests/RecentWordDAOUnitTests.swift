@@ -81,7 +81,7 @@ class RecentWordDAOUnitTests: XCTestCase {
         XCTAssertTrue(words.count == 48)
         
         words = recentWordDAO.getFilteredWords("ma", limit: 100)
-        XCTAssertTrue(words.count == 48)
+        XCTAssertTrue(words.count == 45)
         
         words = recentWordDAO.getFilteredWords("i")
         XCTAssertTrue(words.count == 0)

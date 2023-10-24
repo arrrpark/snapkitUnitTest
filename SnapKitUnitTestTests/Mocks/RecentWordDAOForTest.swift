@@ -43,10 +43,14 @@ class RecentWordDAOForTest: RecentWordDAO {
         }
         
         tmpString = NSMutableString(string: "m")
-        for _ in 0..<48 {
+        for _ in 0..<45 {
             tmpString.append("a")
             saveOrUpdateWord(tmpString as String)
         }
+        
+        saveOrUpdateWord("Message")
+        saveOrUpdateWord("Micro")
+        saveOrUpdateWord("Mio")
     }
 }
 

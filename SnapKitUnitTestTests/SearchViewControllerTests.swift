@@ -85,9 +85,8 @@ final class SearchViewControllerTests: XCTestCase {
         let deleteIcon = appSearchViewController.deleteIcon
         XCTAssertTrue(deleteIcon.isHidden)
         
-        
         let textField = appSearchViewController.searchField
-        appSearchViewController.searchViewModel.isSearchFieldFocused.accept(true)
+        textField.sendActions(for: .editingDidBegin)
         textField.text = "Hello"
         textField.sendActions(for: .editingChanged)
         
@@ -104,6 +103,43 @@ final class SearchViewControllerTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
     
+    func testRecentWordFilteredProperly() {
+        let dao = RecentWordDAOForTest.sharedForTest
+        dao.deleteWords()
+        dao.insert98Words()
+        
+        let searchField = appSearchViewController.searchField
+        searchField.sendActions(for: .editingDidBegin)
+        searchField.text = "m"
+        searchField.sendActions(for: .editingChanged)
+        
+        let appInfoCollectionview = appSearchViewController.appInfoCollectionView
+        let recentWordCollectionView = appSearchViewController.recentWordCollectionView
+        
+        XCTAssertTrue(appInfoCollectionview.isHidden)
+        XCTAssertFalse(recentWordCollectionView.isHidden)
+        XCTAssertEqual(recentWordCollectionView.numberOfItems(inSection: 0), 10)
+        
+        searchField.text = "Mi"
+        searchField.sendActions(for: .editingChanged)
+        XCTAssertEqual(recentWordCollectionView.numberOfItems(inSection: 0), 2)
+        
+        var cell = recentWordCollectionView.dataSource?.collectionView(recentWordCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as! RecentWordCell
+        XCTAssertTrue(cell.wordLabel.text == "Mio")
+        
+        cell = recentWordCollectionView.dataSource?.collectionView(recentWordCollectionView, cellForItemAt: IndexPath(row: 1, section: 0)) as! RecentWordCell
+        XCTAssertTrue(cell.wordLabel.text == "Micro")
+        
+        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        assertSnapshot(of: appSearchViewController, as: .image(size: size))
+        
+        searchField.text = ""
+        searchField.sendActions(for: .editingDidEnd)
+        searchField.sendActions(for: .editingChanged)
+        
+        XCTAssertEqual(recentWordCollectionView.numberOfItems(inSection: 0), 0)
+        dao.deleteWords()
+    }
     
     func testAppInfoCollectionViewProperlySet() {
         let appInfoCollectionView = appSearchViewController.appInfoCollectionView
@@ -114,6 +150,9 @@ final class SearchViewControllerTests: XCTestCase {
         appSearchViewController.searchApps("message")
         XCTAssertEqual(appSearchViewController.searchViewModel.apps.value.count, 15)
         XCTAssertEqual(appInfoCollectionView.numberOfItems(inSection: 0), 15)
+        
+        XCTAssertFalse(appInfoCollectionView.isHidden)
+        XCTAssertTrue(appSearchViewController.recentWordCollectionView.isHidden)
 
         var cell = appInfoCollectionView.dataSource?.collectionView(appInfoCollectionView, cellForItemAt: IndexPath(row: 0, section: 0)) as! AppInfoCell
 
